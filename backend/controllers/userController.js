@@ -183,3 +183,12 @@ exports.resetUserPassword = catchAsyncError(async (req, res, next) => {
     message: "Password Changed Successfully. Please Login",
   });
 });
+
+// get other user details
+exports.getOtherUserDetails = catchAsyncError(async (req, res, next) => {
+  const user = await User.find({ id: req.params.userId });
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+  res.status(200).json({ success: true, otherUser: user });
+});

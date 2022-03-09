@@ -9,6 +9,7 @@ const {
   logoutUser,
   forgotUserPassword,
   resetUserPassword,
+  getOtherUserDetails,
 } = require("../controllers/userController");
 const authMiddleware = require("../middlewares/auth");
 
@@ -21,6 +22,9 @@ router
   .get(authMiddleware, getUserDetails)
   .delete(authMiddleware, deleteUser)
   .put(authMiddleware, updateUserDetails);
+
+// other routes
+router.route("/detail/:userId").get(authMiddleware, getOtherUserDetails);
 
 // password routes
 router.route("/forgot/password").post(forgotUserPassword);
