@@ -10,6 +10,7 @@ const {
   forgotUserPassword,
   resetUserPassword,
   getOtherUserDetails,
+  searchUsers,
 } = require("../controllers/userController");
 const authMiddleware = require("../middlewares/auth");
 
@@ -23,8 +24,9 @@ router
   .delete(authMiddleware, deleteUser)
   .put(authMiddleware, updateUserDetails);
 
-// other routes
+// other user routes
 router.route("/detail/:userId").get(authMiddleware, getOtherUserDetails);
+router.route("/search").get(authMiddleware, searchUsers);
 
 // password routes
 router.route("/forgot/password").post(forgotUserPassword);

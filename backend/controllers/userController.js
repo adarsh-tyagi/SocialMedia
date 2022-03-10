@@ -192,3 +192,10 @@ exports.getOtherUserDetails = catchAsyncError(async (req, res, next) => {
   }
   res.status(200).json({ success: true, otherUser: user });
 });
+
+// search users
+exports.searchUsers = catchAsyncError(async (req, res, next) => {
+  const regex = new RegExp(req.query.search, "ig");
+  const searchResults = await User.find({ name: regex }).limit(10);
+  res.status(200).json({ success: true, searchResults });
+});
