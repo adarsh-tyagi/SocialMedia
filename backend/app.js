@@ -6,6 +6,11 @@ const errorMiddleware = require("./middlewares/error");
 
 // import routers
 const userRouter = require("./routes/userRoute");
+const postRouter = require("./routes/postRoute");
+const likeRouter = require("./routes/likeRoute");
+const commentRouter = require("./routes/commentRoute");
+const followRouter = require("./routes/followRoute");
+const notificationRouter = require("./routes/notificationRoute");
 
 // using env properties
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -21,6 +26,11 @@ app.use(cors());
 
 // routes
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/post", postRouter);
+app.use("/api/v1/like", likeRouter);
+app.use("/api/v1/comment", commentRouter);
+app.use("/api/v1/follow", followRouter);
+app.use("/api/v1/notification", notificationRouter);
 
 app.use(errorMiddleware);
 
