@@ -26,11 +26,14 @@ exports.createComment = catchAsyncError(async (req, res, next) => {
 
 // delete comment
 exports.deleteComment = catchAsyncError(async (req, res, next) => {
+  const post = await Post.findOne({ _id: req.body.postId });
   const comment = await Comment.findOne({
     post: req.body.postId,
     owner: req.user._id,
   });
   await comment.remove();
+  post.commentsCount--;
+  await post.save();
   res.status(200).json({ success: true, message: "Your comment is deleted" });
 });
 
