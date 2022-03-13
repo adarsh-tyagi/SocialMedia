@@ -186,7 +186,7 @@ exports.resetUserPassword = catchAsyncError(async (req, res, next) => {
 
 // get other user details
 exports.getOtherUserDetails = catchAsyncError(async (req, res, next) => {
-  const user = await User.find({ id: req.params.userId });
+  const user = await User.findOne({ _id: req.params.userId });
   if (!user) {
     return next(new ErrorHandler("User not found", 404));
   }

@@ -14,7 +14,7 @@ exports.getHomePosts = catchAsyncError(async (req, res, next) => {
     .limit(postPerPage)
     .skip(postPerPage * (page - 1));
 
-  req.status(200).json({
+  res.status(200).json({
     success: true,
     homePosts,
     numOfPosts: homePosts.length,
