@@ -12,22 +12,22 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
   if (!name || !email || !password || !bio || !avatar) {
     return next(new ErrorHandler("Please enter all the required fields", 400));
   }
-  //   const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-  //     folder: "SocialMedia-Avatars",
-  //   });
+  const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+    folder: "SocialMedia-Avatars",
+  });
   const user = await User.create({
     name,
     email,
     password,
     bio,
-    avatar: {
-      public_id: "public_id",
-      url: "url",
-    },
     // avatar: {
-    //   public_id: myCloud.public_id,
-    //   url: myCloud.secure_url,
+    //   public_id: "public_id",
+    //   url: "url",
     // },
+    avatar: {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    },
   });
   const token = user.getJWTToken();
   try {

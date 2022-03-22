@@ -30,20 +30,20 @@ exports.createPost = catchAsyncError(async (req, res, next) => {
       new ErrorHandler("Please fill the required fields for post", 400)
     );
   }
-  //   const myCloud = await cloudinary.v2.uploader.upload(image, {
-  //     folder: "SocialMedia-Posts",
-  //   });
+  const myCloud = await cloudinary.v2.uploader.upload(image, {
+    folder: "SocialMedia-Posts",
+  });
   const post = await Post.create({
     owner: req.user._id,
     caption,
-    // image: {
-    //   public_id: myCloud.public_id,
-    //   url: myCloud.secure_url,
-    // },
     image: {
-      public_id: "postId",
-      url: "post_url",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
+    // image: {
+    //   public_id: "postId",
+    //   url: "post_url",
+    // },
   });
 
   res.status(201).json({
