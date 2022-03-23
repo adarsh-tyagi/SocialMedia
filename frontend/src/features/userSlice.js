@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BACKEND_URL } from "../url";
 
-// action for user reducers
+// actions for user reducer
 
 // register user
 export const registerUser = createAsyncThunk(
@@ -168,7 +168,22 @@ export const userDetails = createAsyncThunk(
 );
 
 // search user
-
+export const searchUser = createAsyncThunk(
+  "user/searchUser",
+  async (search, { rejectWithValue }) => {
+    try {
+      const socialmediatoken = localStorage.getItem("socialmediatoken");
+      const config = { headers: { Authorization: socialmediatoken } };
+      const { data } = await axios.get(
+        `${BACKEND_URL}/search?search=${search}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -180,6 +195,8 @@ export const userSlice = createSlice({
     message: null,
     isDeleted: false,
     isUpdated: false,
+    userDetail: null,
+    searchResult: [],
   },
   reducers: {
     clearError: (state) => {
@@ -188,9 +205,146 @@ export const userSlice = createSlice({
     clearMessage: (state) => {
       state.message = null;
     },
+    resetUpdate: (state) => {
+      state.isUpdated = false;
+    },
+    resetDelete: (state) => {
+      state.isDeleted = false;
+    },
   },
-  extraReducers: {},
+  extraReducers: {
+    [registerUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [registerUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+    },
+    [registerUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [loginUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [loginUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+    },
+    [loginUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [loadUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [loadUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+    },
+    [loadUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [logoutUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [logoutUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.message = action.payload.message;
+    },
+    [logoutUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [updateUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [updateUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+      state.isUpdated = action.payload.success;
+    },
+    [updateUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [deleteUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [deleteUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;
+      state.message = action.payload.message;
+      state.isDeleted = action.payload.success;
+    },
+    [deleteUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [forgotPassword.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [forgotPassword.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    [forgotPassword.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [resetPassword.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.message = action.payload.message;
+    },
+    [resetPassword.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [userDetails.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [userDetails.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.userDetail = action.payload.otherUser;
+    },
+    [userDetails.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+
+    [searchUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [searchUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.searchResult = action.payload.searchResults;
+    },
+    [searchUser.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
+    },
+  },
 });
 
-export const { clearError, clearMessage } = userSlice.actions;
+export const { clearError, clearMessage, resetUpdate, resetDelete } = userSlice.actions;
 export default userSlice.reducer;
