@@ -18,7 +18,7 @@ export const createComment = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -37,7 +37,7 @@ export const deleteComment = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -52,7 +52,7 @@ export const postComments = createAsyncThunk(
       const { data } = await axios.get(`${BACKEND_URL}/post/${postId}`, config);
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );

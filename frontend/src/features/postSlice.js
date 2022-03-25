@@ -17,7 +17,7 @@ export const homePosts = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -41,7 +41,7 @@ export const createPost = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -60,7 +60,7 @@ export const deletePost = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -78,7 +78,7 @@ export const postDetail = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -96,7 +96,7 @@ export const userPosts = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -111,7 +111,7 @@ export const ownPosts = createAsyncThunk(
       const { data } = await axios.get(`${BACKEND_URL}/post/me`, config);
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );

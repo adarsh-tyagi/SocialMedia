@@ -18,7 +18,7 @@ export const toggleLike = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -36,7 +36,7 @@ export const postLikes = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -51,7 +51,7 @@ export const likedPost = createAsyncThunk(
       const { data } = await axios.get(`${BACKEND_URL}/like/me`, config);
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );

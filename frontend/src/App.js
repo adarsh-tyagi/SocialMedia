@@ -1,10 +1,11 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import Loader from "./components/Loader/Loader";
 
 function App() {
   return (
     <div className="App">
-      <h1>Social Media</h1>
+      <Loader />
     </div>
   );
 }

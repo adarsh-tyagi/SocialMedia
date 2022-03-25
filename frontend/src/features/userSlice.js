@@ -18,7 +18,7 @@ export const registerUser = createAsyncThunk(
       localStorage.setItem("socialmediatoken", data.token);
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -37,7 +37,7 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem("socialmediatoken", data.token);
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -52,7 +52,7 @@ export const loadUser = createAsyncThunk(
       const { data } = await axios.get(`${BACKEND_URL}/user/me`, config);
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -68,7 +68,7 @@ export const logoutUser = createAsyncThunk(
       localStorage.removeItem("socialmediatoken");
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -92,7 +92,7 @@ export const updateUser = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -108,7 +108,7 @@ export const deleteUser = createAsyncThunk(
       localStorage.removeItem("socialmediatoken");
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -126,7 +126,7 @@ export const forgotPassword = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -144,7 +144,7 @@ export const resetPassword = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -162,7 +162,7 @@ export const userDetails = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -180,7 +180,7 @@ export const searchUser = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      rejectWithValue(error.response.data);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -346,5 +346,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage, resetUpdate, resetDelete } = userSlice.actions;
+export const { clearError, clearMessage, resetUpdate, resetDelete } =
+  userSlice.actions;
 export default userSlice.reducer;
