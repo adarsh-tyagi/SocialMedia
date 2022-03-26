@@ -7,7 +7,7 @@ import { BACKEND_URL } from "../url";
 // follow user
 export const followUser = createAsyncThunk(
   "follow/followUser",
-  async (followingId, { rejectWithValue }) => {
+  async (followingId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -18,7 +18,7 @@ export const followUser = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -26,7 +26,7 @@ export const followUser = createAsyncThunk(
 // unfollow user
 export const unfollowUser = createAsyncThunk(
   "follow/unfollowUser",
-  async (followingId, { rejectWithValue }) => {
+  async (followingId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -37,7 +37,7 @@ export const unfollowUser = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -45,14 +45,14 @@ export const unfollowUser = createAsyncThunk(
 // get own followers
 export const getMyFollowers = createAsyncThunk(
   "follow/getMyFollowers",
-  async ({ rejectWithValue }) => {
+  async () => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.get(`${BACKEND_URL}/myfollowers`, config);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -60,14 +60,14 @@ export const getMyFollowers = createAsyncThunk(
 // get own followings
 export const getMyFollowing = createAsyncThunk(
   "follow/getMyFollowing",
-  async ({ rejectWithValue }) => {
+  async () => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.get(`${BACKEND_URL}/myfollowing`, config);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -99,7 +99,7 @@ export const followSlice = createSlice({
     },
     [followUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [unfollowUser.pending]: (state, action) => {
@@ -111,7 +111,7 @@ export const followSlice = createSlice({
     },
     [unfollowUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [getMyFollowers.pending]: (state, action) => {
@@ -123,7 +123,7 @@ export const followSlice = createSlice({
     },
     [getMyFollowers.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [getMyFollowing.pending]: (state, action) => {
@@ -135,7 +135,7 @@ export const followSlice = createSlice({
     },
     [getMyFollowing.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
   },
 });

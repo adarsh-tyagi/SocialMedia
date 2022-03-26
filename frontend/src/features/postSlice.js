@@ -7,7 +7,7 @@ import { BACKEND_URL } from "../url";
 // get home page posts
 export const homePosts = createAsyncThunk(
   "post/homePosts",
-  async (page, { rejectWithValue }) => {
+  async (page) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -17,7 +17,7 @@ export const homePosts = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -25,7 +25,7 @@ export const homePosts = createAsyncThunk(
 // create post
 export const createPost = createAsyncThunk(
   "post/createPost",
-  async (postdata, { rejectWithValue }) => {
+  async (postdata) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = {
@@ -41,7 +41,7 @@ export const createPost = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -49,7 +49,7 @@ export const createPost = createAsyncThunk(
 // delete post
 export const deletePost = createAsyncThunk(
   "post/deletePost",
-  async (postdata, { rejectWithValue }) => {
+  async (postdata) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -60,7 +60,7 @@ export const deletePost = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -68,7 +68,7 @@ export const deletePost = createAsyncThunk(
 // get post details
 export const postDetail = createAsyncThunk(
   "post/postDetail",
-  async (postId, { rejectWithValue }) => {
+  async (postId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -78,7 +78,7 @@ export const postDetail = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -86,7 +86,7 @@ export const postDetail = createAsyncThunk(
 // get another user's posts
 export const userPosts = createAsyncThunk(
   "post/userPosts",
-  async (userId, { rejectWithValue }) => {
+  async (userId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -96,7 +96,7 @@ export const userPosts = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -104,14 +104,14 @@ export const userPosts = createAsyncThunk(
 // get own posts
 export const ownPosts = createAsyncThunk(
   "post/ownPosts",
-  async ({ rejectWithValue }) => {
+  async () => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.get(`${BACKEND_URL}/post/me`, config);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -149,7 +149,7 @@ export const postSlice = createSlice({
     },
     [homePosts.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [createPost.pending]: (state, action) => {
@@ -161,7 +161,7 @@ export const postSlice = createSlice({
     },
     [createPost.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [deletePost.pending]: (state, action) => {
@@ -173,7 +173,7 @@ export const postSlice = createSlice({
     },
     [deletePost.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [postDetail.pending]: (state, action) => {
@@ -185,7 +185,7 @@ export const postSlice = createSlice({
     },
     [postDetail.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [userPosts.pending]: (state, action) => {
@@ -197,7 +197,7 @@ export const postSlice = createSlice({
     },
     [userPosts.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [ownPosts.pending]: (state, action) => {
@@ -209,7 +209,7 @@ export const postSlice = createSlice({
     },
     [ownPosts.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
   },
 });

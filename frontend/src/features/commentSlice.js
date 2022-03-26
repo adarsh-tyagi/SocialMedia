@@ -7,7 +7,7 @@ import { BACKEND_URL } from "../url";
 // create comment
 export const createComment = createAsyncThunk(
   "comment/createComment",
-  async (commentdata, { rejectWithValue }) => {
+  async (commentdata) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -18,7 +18,7 @@ export const createComment = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -26,7 +26,7 @@ export const createComment = createAsyncThunk(
 // delete comment
 export const deleteComment = createAsyncThunk(
   "comment/deleteComment",
-  async (commentId, { rejectWithValue }) => {
+  async (commentId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -37,7 +37,7 @@ export const deleteComment = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -45,14 +45,14 @@ export const deleteComment = createAsyncThunk(
 // get post comments
 export const postComments = createAsyncThunk(
   "comment/postComments",
-  async (postId, { rejectWithValue }) => {
+  async (postId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.get(`${BACKEND_URL}/post/${postId}`, config);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -83,7 +83,7 @@ export const commentSlice = createSlice({
     },
     [createComment.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [deleteComment.pending]: (state, action) => {
@@ -95,7 +95,7 @@ export const commentSlice = createSlice({
     },
     [deleteComment.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [postComments.pending]: (state, action) => {
@@ -107,7 +107,7 @@ export const commentSlice = createSlice({
     },
     [postComments.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
   },
 });

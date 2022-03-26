@@ -7,7 +7,7 @@ import { BACKEND_URL } from "../url";
 // toggle like button
 export const toggleLike = createAsyncThunk(
   "like/toggleLike",
-  async (postId, { rejectWithValue }) => {
+  async (postId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -18,7 +18,7 @@ export const toggleLike = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -26,7 +26,7 @@ export const toggleLike = createAsyncThunk(
 // get post likes
 export const postLikes = createAsyncThunk(
   "like/postLikes",
-  async (postId, { rejectWithValue }) => {
+  async (postId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -36,7 +36,7 @@ export const postLikes = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -44,14 +44,14 @@ export const postLikes = createAsyncThunk(
 // get user's liked posts
 export const likedPost = createAsyncThunk(
   "like/likedPost",
-  async ({ rejectWithValue }) => {
+  async () => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.get(`${BACKEND_URL}/like/me`, config);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -83,7 +83,7 @@ export const likeSlice = createSlice({
     },
     [toggleLike.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [postLikes.pending]: (state, action) => {
@@ -95,7 +95,7 @@ export const likeSlice = createSlice({
     },
     [postLikes.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [likedPost.pending]: (state, action) => {
@@ -107,7 +107,7 @@ export const likeSlice = createSlice({
     },
     [likedPost.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
   },
 });

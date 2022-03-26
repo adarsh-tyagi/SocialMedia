@@ -7,7 +7,7 @@ import { BACKEND_URL } from "../url";
 // register user
 export const registerUser = createAsyncThunk(
   "user/registerUser",
-  async (userdata, { rejectWithValue }) => {
+  async (userdata) => {
     try {
       const config = { headers: { "Content-Type": "multipart/form-data" } };
       const { data } = await axios.post(
@@ -18,7 +18,7 @@ export const registerUser = createAsyncThunk(
       localStorage.setItem("socialmediatoken", data.token);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -26,7 +26,7 @@ export const registerUser = createAsyncThunk(
 // login user
 export const loginUser = createAsyncThunk(
   "user/loginUser",
-  async (userdata, { rejectWithValue }) => {
+  async (userdata) => {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.post(
@@ -37,46 +37,40 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem("socialmediatoken", data.token);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
 
 // load user
-export const loadUser = createAsyncThunk(
-  "user/loadUser",
-  async ({ rejectWithValue }) => {
-    try {
-      const socialmediatoken = localStorage.getItem("socialmediatoken");
-      const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(`${BACKEND_URL}/user/me`, config);
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+export const loadUser = createAsyncThunk("user/loadUser", async () => {
+  try {
+    const socialmediatoken = localStorage.getItem("socialmediatoken");
+    const config = { headers: { Authorization: socialmediatoken } };
+    const { data } = await axios.get(`${BACKEND_URL}/user/me`, config);
+    return data;
+  } catch (error) {
+    throw error.response.data.message;
   }
-);
+});
 
 // logout user
-export const logoutUser = createAsyncThunk(
-  "user/logoutUser",
-  async ({ rejectWithValue }) => {
-    try {
-      const socialmediatoken = localStorage.getItem("socialmediatoken");
-      const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(`${BACKEND_URL}/user/logout`, config);
-      localStorage.removeItem("socialmediatoken");
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+export const logoutUser = createAsyncThunk("user/logoutUser", async () => {
+  try {
+    const socialmediatoken = localStorage.getItem("socialmediatoken");
+    const config = { headers: { Authorization: socialmediatoken } };
+    const { data } = await axios.get(`${BACKEND_URL}/user/logout`, config);
+    localStorage.removeItem("socialmediatoken");
+    return data;
+  } catch (error) {
+    throw error.response.data.message;
   }
-);
+});
 
 // update user profile
 export const updateUser = createAsyncThunk(
   "user/updateUser",
-  async (userdata, { rejectWithValue }) => {
+  async (userdata) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = {
@@ -92,31 +86,28 @@ export const updateUser = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
 
 // delete user
-export const deleteUser = createAsyncThunk(
-  "user/deleteUser",
-  async ({ rejectWithValue }) => {
-    try {
-      const socialmediatoken = localStorage.getItem("socialmediatoken");
-      const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.delete(`${BACKEND_URL}/user/me`, config);
-      localStorage.removeItem("socialmediatoken");
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+export const deleteUser = createAsyncThunk("user/deleteUser", async () => {
+  try {
+    const socialmediatoken = localStorage.getItem("socialmediatoken");
+    const config = { headers: { Authorization: socialmediatoken } };
+    const { data } = await axios.delete(`${BACKEND_URL}/user/me`, config);
+    localStorage.removeItem("socialmediatoken");
+    return data;
+  } catch (error) {
+    throw error.response.data.message;
   }
-);
+});
 
 // forgot password
 export const forgotPassword = createAsyncThunk(
   "user/forgotPassword",
-  async (userdata, { rejectWithValue }) => {
+  async (userdata) => {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.post(
@@ -126,7 +117,7 @@ export const forgotPassword = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -134,7 +125,7 @@ export const forgotPassword = createAsyncThunk(
 // reset user's password
 export const resetPassword = createAsyncThunk(
   "user/resetPassword",
-  async (userdata, { rejectWithValue }) => {
+  async (userdata) => {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.put(
@@ -144,7 +135,7 @@ export const resetPassword = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -152,7 +143,7 @@ export const resetPassword = createAsyncThunk(
 // another user details
 export const userDetails = createAsyncThunk(
   "user/userDetails",
-  async (userId, { rejectWithValue }) => {
+  async (userId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -162,7 +153,7 @@ export const userDetails = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -170,7 +161,7 @@ export const userDetails = createAsyncThunk(
 // search user
 export const searchUser = createAsyncThunk(
   "user/searchUser",
-  async (search, { rejectWithValue }) => {
+  async (search) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -180,7 +171,7 @@ export const searchUser = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -224,7 +215,7 @@ export const userSlice = createSlice({
     },
     [registerUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [loginUser.pending]: (state, action) => {
@@ -238,7 +229,7 @@ export const userSlice = createSlice({
     },
     [loginUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [loadUser.pending]: (state, action) => {
@@ -250,7 +241,7 @@ export const userSlice = createSlice({
     },
     [loadUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [logoutUser.pending]: (state, action) => {
@@ -264,7 +255,7 @@ export const userSlice = createSlice({
     },
     [logoutUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [updateUser.pending]: (state, action) => {
@@ -278,7 +269,7 @@ export const userSlice = createSlice({
     },
     [updateUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [deleteUser.pending]: (state, action) => {
@@ -293,7 +284,7 @@ export const userSlice = createSlice({
     },
     [deleteUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [forgotPassword.pending]: (state, action) => {
@@ -305,7 +296,7 @@ export const userSlice = createSlice({
     },
     [forgotPassword.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [resetPassword.pending]: (state, action) => {
@@ -317,7 +308,7 @@ export const userSlice = createSlice({
     },
     [resetPassword.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [userDetails.pending]: (state, action) => {
@@ -329,7 +320,7 @@ export const userSlice = createSlice({
     },
     [userDetails.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [searchUser.pending]: (state, action) => {
@@ -341,7 +332,7 @@ export const userSlice = createSlice({
     },
     [searchUser.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
   },
 });

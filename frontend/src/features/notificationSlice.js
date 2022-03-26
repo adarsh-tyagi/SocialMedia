@@ -7,7 +7,7 @@ import { BACKEND_URL } from "../url";
 // create notification
 export const createNotification = createAsyncThunk(
   "notification/createNotification",
-  async (notificationdata, { rejectWithValue }) => {
+  async (notificationdata) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -18,7 +18,7 @@ export const createNotification = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -26,7 +26,7 @@ export const createNotification = createAsyncThunk(
 // delete a notification
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
-  async (notificationdata, { rejectWithValue }) => {
+  async (notificationdata) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -37,7 +37,7 @@ export const deleteNotification = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -45,7 +45,7 @@ export const deleteNotification = createAsyncThunk(
 // delete all notifications
 export const deleteAllNotifications = createAsyncThunk(
   "notification/deleteAllNotifications",
-  async ({ rejectWithValue }) => {
+  async () => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
@@ -55,7 +55,7 @@ export const deleteAllNotifications = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -63,14 +63,14 @@ export const deleteAllNotifications = createAsyncThunk(
 // get all notifications
 export const getNotifications = createAsyncThunk(
   "notification/getNotifications",
-  async ({ rejectWithValue }) => {
+  async () => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.get(`${BACKEND_URL}/notification`, config);
       return data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      throw error.response.data.message;
     }
   }
 );
@@ -100,7 +100,7 @@ export const notificationSlice = createSlice({
     },
     [createNotification.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [deleteNotification.pending]: (state, action) => {
@@ -112,7 +112,7 @@ export const notificationSlice = createSlice({
     },
     [deleteNotification.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [deleteAllNotifications.pending]: (state, action) => {
@@ -124,7 +124,7 @@ export const notificationSlice = createSlice({
     },
     [deleteAllNotifications.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
 
     [getNotifications.pending]: (state, action) => {
@@ -136,7 +136,7 @@ export const notificationSlice = createSlice({
     },
     [getNotifications.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload.message;
+      state.error = action.error.message;
     },
   },
 });
