@@ -5,7 +5,9 @@ import { TiSocialInstagram } from "react-icons/ti";
 const Header = ({ isAuthenticated, user }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const submitHandler = () => {};
+  const submitHandler = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className="header">
@@ -24,7 +26,9 @@ const Header = ({ isAuthenticated, user }) => {
       </div>
       <div className="header__div2">
         {isAuthenticated ? (
-          <img src={user.avatar.url} alt={user.name} />
+          <Link to="/profile">
+            <img src={user.avatar.url} alt={user.name} />
+          </Link>
         ) : (
           <Link to="/signin">Sign In</Link>
         )}

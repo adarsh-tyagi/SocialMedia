@@ -5,22 +5,19 @@ import { BACKEND_URL } from "../url";
 // actions for post reducer
 
 // get home page posts
-export const homePosts = createAsyncThunk(
-  "post/homePosts",
-  async (page) => {
-    try {
-      const socialmediatoken = localStorage.getItem("socialmediatoken");
-      const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(
-        `${BACKEND_URL}/post/home?page=${page}`,
-        config
-      );
-      return data;
-    } catch (error) {
-      throw error.response.data.message;
-    }
+export const homePosts = createAsyncThunk("post/homePosts", async (page) => {
+  try {
+    const socialmediatoken = localStorage.getItem("socialmediatoken");
+    const config = { headers: { Authorization: socialmediatoken } };
+    const { data } = await axios.get(
+      `${BACKEND_URL}/post/home?page=${page}`,
+      config
+    );
+    return data;
+  } catch (error) {
+    throw error.response.data.message;
   }
-);
+});
 
 // create post
 export const createPost = createAsyncThunk(
@@ -84,37 +81,31 @@ export const postDetail = createAsyncThunk(
 );
 
 // get another user's posts
-export const userPosts = createAsyncThunk(
-  "post/userPosts",
-  async (userId) => {
-    try {
-      const socialmediatoken = localStorage.getItem("socialmediatoken");
-      const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(
-        `${BACKEND_URL}/post/user/${userId}`,
-        config
-      );
-      return data;
-    } catch (error) {
-      throw error.response.data.message;
-    }
+export const userPosts = createAsyncThunk("post/userPosts", async (userId) => {
+  try {
+    const socialmediatoken = localStorage.getItem("socialmediatoken");
+    const config = { headers: { Authorization: socialmediatoken } };
+    const { data } = await axios.get(
+      `${BACKEND_URL}/post/user/${userId}`,
+      config
+    );
+    return data;
+  } catch (error) {
+    throw error.response.data.message;
   }
-);
+});
 
 // get own posts
-export const ownPosts = createAsyncThunk(
-  "post/ownPosts",
-  async () => {
-    try {
-      const socialmediatoken = localStorage.getItem("socialmediatoken");
-      const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(`${BACKEND_URL}/post/me`, config);
-      return data;
-    } catch (error) {
-      throw error.response.data.message;
-    }
+export const ownPosts = createAsyncThunk("post/ownPosts", async () => {
+  try {
+    const socialmediatoken = localStorage.getItem("socialmediatoken");
+    const config = { headers: { Authorization: socialmediatoken } };
+    const { data } = await axios.get(`${BACKEND_URL}/post/me`, config);
+    return data;
+  } catch (error) {
+    throw error.response.data.message;
   }
-);
+});
 
 export const postSlice = createSlice({
   name: "post",

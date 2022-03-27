@@ -237,6 +237,7 @@ export const userSlice = createSlice({
     },
     [loadUser.fulfilled]: (state, action) => {
       state.loading = false;
+      state.isAuthenticated = true;
       state.user = action.payload.user;
     },
     [loadUser.rejected]: (state, action) => {

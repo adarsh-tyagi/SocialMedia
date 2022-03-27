@@ -49,7 +49,10 @@ export const getMyFollowers = createAsyncThunk(
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(`${BACKEND_URL}/myfollowers`, config);
+      const { data } = await axios.get(
+        `${BACKEND_URL}/follow/myfollowers`,
+        config
+      );
       return data;
     } catch (error) {
       throw error.response.data.message;
@@ -64,7 +67,10 @@ export const getMyFollowing = createAsyncThunk(
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(`${BACKEND_URL}/myfollowing`, config);
+      const { data } = await axios.get(
+        `${BACKEND_URL}/follow/mefollowing`,
+        config
+      );
       return data;
     } catch (error) {
       throw error.response.data.message;
