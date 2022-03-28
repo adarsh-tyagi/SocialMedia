@@ -130,7 +130,7 @@ export const resetPassword = createAsyncThunk(
       const config = { headers: { "Content-Type": "application/json" } };
       const { data } = await axios.put(
         `${BACKEND_URL}/user/reset/password/${userdata.token}`,
-        userdata,
+        userdata.myForm,
         config
       );
       return data;
