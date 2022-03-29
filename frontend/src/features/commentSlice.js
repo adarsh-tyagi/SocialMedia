@@ -12,7 +12,7 @@ export const createComment = createAsyncThunk(
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.post(
-        `${BACKEND_URL}/create`,
+        `${BACKEND_URL}/comment/create`,
         commentdata,
         config
       );
@@ -31,7 +31,7 @@ export const deleteComment = createAsyncThunk(
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.delete(
-        `${BACKEND_URL}/delete`,
+        `${BACKEND_URL}/comment/delete`,
         commentId,
         config
       );
@@ -49,7 +49,10 @@ export const postComments = createAsyncThunk(
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(`${BACKEND_URL}/post/${postId}`, config);
+      const { data } = await axios.get(
+        `${BACKEND_URL}/comment/post/${postId}`,
+        config
+      );
       return data;
     } catch (error) {
       throw error.response.data.message;
@@ -64,6 +67,7 @@ export const commentSlice = createSlice({
     message: null,
     error: null,
     comments: [],
+    commentCount: null,
   },
   reducers: {
     clearError: (state) => {
@@ -80,6 +84,8 @@ export const commentSlice = createSlice({
     [createComment.fulfilled]: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      state.comments = action.payload.allComments;
+      state.commentCount = action.payload.allComments.length;
     },
     [createComment.rejected]: (state, action) => {
       state.loading = false;
@@ -92,6 +98,8 @@ export const commentSlice = createSlice({
     [deleteComment.fulfilled]: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      state.comments = action.payload.allComments;
+      state.commentCount = action.payload.allComments.length;
     },
     [deleteComment.rejected]: (state, action) => {
       state.loading = false;
@@ -103,7 +111,8 @@ export const commentSlice = createSlice({
     },
     [postComments.fulfilled]: (state, action) => {
       state.loading = false;
-      state.postComments = action.payload.comments;
+      state.comments = action.payload.comments;
+      state.commentCount = action.payload.comments.length;
     },
     [postComments.rejected]: (state, action) => {
       state.loading = false;

@@ -11,16 +11,18 @@ exports.toggleLike = catchAsyncError(async (req, res, next) => {
     await Like.create({ post: postId, owner: req.user._id });
     post.likesCount++;
     await post.save();
+    const allLikes = await Like.find({post: postId})
     return res
       .status(200)
-      .json({ success: true, message: "You liked the post" });
+      .json({ success: true, message: "You liked the post", allLikes });
   } else {
     post.likesCount--;
     await post.save();
     await like.remove();
+    const allLikes = await Like.find({ post: postId });
     return res
       .status(200)
-      .json({ success: true, message: "Your like is removed" });
+      .json({ success: true, message: "Your like is removed", allLikes });
   }
 });
 

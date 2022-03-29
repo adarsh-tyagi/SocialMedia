@@ -24,37 +24,31 @@ export const toggleLike = createAsyncThunk(
 );
 
 // get post likes
-export const postLikes = createAsyncThunk(
-  "like/postLikes",
-  async (postId) => {
-    try {
-      const socialmediatoken = localStorage.getItem("socialmediatoken");
-      const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(
-        `${BACKEND_URL}/like/post/${postId}`,
-        config
-      );
-      return data;
-    } catch (error) {
-      throw error.response.data.message;
-    }
+export const postLikes = createAsyncThunk("like/postLikes", async (postId) => {
+  try {
+    const socialmediatoken = localStorage.getItem("socialmediatoken");
+    const config = { headers: { Authorization: socialmediatoken } };
+    const { data } = await axios.get(
+      `${BACKEND_URL}/like/post/${postId}`,
+      config
+    );
+    return data;
+  } catch (error) {
+    throw error.response.data.message;
   }
-);
+});
 
 // get user's liked posts
-export const likedPost = createAsyncThunk(
-  "like/likedPost",
-  async () => {
-    try {
-      const socialmediatoken = localStorage.getItem("socialmediatoken");
-      const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.get(`${BACKEND_URL}/like/me`, config);
-      return data;
-    } catch (error) {
-      throw error.response.data.message;
-    }
+export const likedPost = createAsyncThunk("like/likedPost", async () => {
+  try {
+    const socialmediatoken = localStorage.getItem("socialmediatoken");
+    const config = { headers: { Authorization: socialmediatoken } };
+    const { data } = await axios.get(`${BACKEND_URL}/like/me`, config);
+    return data;
+  } catch (error) {
+    throw error.response.data.message;
   }
-);
+});
 
 export const likeSlice = createSlice({
   name: "like",
@@ -62,6 +56,7 @@ export const likeSlice = createSlice({
     loading: true,
     postLikes: [],
     userLikes: [],
+    likeCount: null,
     message: null,
     error: false,
   },
@@ -80,6 +75,8 @@ export const likeSlice = createSlice({
     [toggleLike.fulfilled]: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      state.postLikes = action.payload.allLikes;
+      state.likeCount = action.payload.allLikes.length;
     },
     [toggleLike.rejected]: (state, action) => {
       state.loading = false;
@@ -92,6 +89,7 @@ export const likeSlice = createSlice({
     [postLikes.fulfilled]: (state, action) => {
       state.loading = false;
       state.postLikes = action.payload.likes;
+      state.likeCount = action.payload.likes.length;
     },
     [postLikes.rejected]: (state, action) => {
       state.loading = false;

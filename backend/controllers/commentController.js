@@ -14,13 +14,15 @@ exports.createComment = catchAsyncError(async (req, res, next) => {
     await Comment.create({ post: postId, owner: req.user._id, content });
     post.commentsCount++;
     await post.save();
+    const allComments = await Comment.find({post: req.body.postId})
     return res
       .status(201)
-      .json({ success: true, message: "Your comment is posted" });
+      .json({ success: true, message: "Your comment is posted", allComments });
   } else {
+    const allComments = await Comment.find({ post: req.body.postId });
     return res
       .status(200)
-      .json({ success: false, message: "You already commented" });
+      .json({ success: false, message: "You already commented", allComments });
   }
 });
 
@@ -34,7 +36,8 @@ exports.deleteComment = catchAsyncError(async (req, res, next) => {
   await comment.remove();
   post.commentsCount--;
   await post.save();
-  res.status(200).json({ success: true, message: "Your comment is deleted" });
+  const allComments = await Comment.find({post: req.body.postId})
+  res.status(200).json({ success: true, message: "Your comment is deleted", allComments });
 });
 
 // get post's comments
