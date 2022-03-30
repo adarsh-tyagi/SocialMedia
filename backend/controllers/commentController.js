@@ -14,12 +14,16 @@ exports.createComment = catchAsyncError(async (req, res, next) => {
     await Comment.create({ post: postId, owner: req.user._id, content });
     post.commentsCount++;
     await post.save();
-    const allComments = await Comment.find({post: req.body.postId})
+    const allComments = await Comment.find({ post: req.body.postId }).populate(
+      "owner"
+    );
     return res
       .status(201)
       .json({ success: true, message: "Your comment is posted", allComments });
   } else {
-    const allComments = await Comment.find({ post: req.body.postId });
+    const allComments = await Comment.find({ post: req.body.postId }).populate(
+      "owner"
+    );
     return res
       .status(200)
       .json({ success: false, message: "You already commented", allComments });
@@ -28,16 +32,20 @@ exports.createComment = catchAsyncError(async (req, res, next) => {
 
 // delete comment
 exports.deleteComment = catchAsyncError(async (req, res, next) => {
-  const post = await Post.findOne({ _id: req.body.postId });
+  const post = await Post.findOne({ _id: req.params.postId });
   const comment = await Comment.findOne({
-    post: req.body.postId,
+    post: req.params.postId,
     owner: req.user._id,
   });
   await comment.remove();
   post.commentsCount--;
   await post.save();
-  const allComments = await Comment.find({post: req.body.postId})
-  res.status(200).json({ success: true, message: "Your comment is deleted", allComments });
+  const allComments = await Comment.find({ post: req.params.postId }).populate(
+    "owner"
+  );
+  res
+    .status(200)
+    .json({ success: true, message: "Your comment is deleted", allComments });
 });
 
 // get post's comments

@@ -7,11 +7,22 @@ import {
   postLikes,
   toggleLike,
 } from "../../features/likeSlice";
-import { postComments } from "../../features/commentSlice";
-import { AiOutlineLike, AiFillLike, AiOutlineComment } from "react-icons/ai";
+import {
+  createComment,
+  deleteComment,
+  postComments,
+} from "../../features/commentSlice";
+import {
+  AiOutlineLike,
+  AiFillLike,
+  AiOutlineComment,
+  AiOutlineClose,
+  AiFillDelete,
+} from "react-icons/ai";
 
 const PostCard = ({ post }) => {
   const [openBox, setOpenBox] = useState(false);
+  const [comment, setComment] = useState("");
 
   const {
     postLikes: likes,
@@ -33,9 +44,18 @@ const PostCard = ({ post }) => {
   const likeHandler = (e) => {
     e.preventDefault();
     dispatch(toggleLike(String(post._id)));
-    dispatch(postLikes(String(post._id)));
+    // dispatch(postLikes(String(post._id)));
   };
-  const commentHandler = () => {};
+  const commentHandler = (e) => {
+    e.preventDefault();
+    dispatch(createComment({ content: comment, postId: String(post._id) }));
+    // dispatch(postComments(String(post._id)))
+  };
+
+  const commentDeleteHandler = (e) => {
+    e.preventDefault();
+    dispatch(deleteComment(String(post._id)));
+  };
 
   useEffect(() => {
     dispatch(postLikes(String(post._id)));
@@ -43,14 +63,14 @@ const PostCard = ({ post }) => {
   }, [dispatch, post]);
 
   useEffect(() => {
-    if (message) {
-      alert.success(message);
-      dispatch(clearMessage());
-    }
-    if (commentMessage) {
-      alert.success(commentMessage);
-      dispatch(clearMessage());
-    }
+    // if (message) {
+    //   alert.success(message);
+    //   dispatch(clearMessage());
+    // }
+    // if (commentMessage) {
+    //   alert.success(commentMessage);
+    //   dispatch(clearMessage());
+    // }
     if (error) {
       alert.error(error);
       dispatch(clearError());
@@ -80,7 +100,63 @@ const PostCard = ({ post }) => {
         </p>
       </div>
 
-      {openBox ? <div>Box opened</div> : ""}
+      {openBox ? (
+        <div>
+          <div>
+            <AiOutlineClose onClick={() => setOpenBox(false)} />
+            <div>
+              {comments.find(
+                (comment) => String(comment.owner._id) === String(user._id)
+              ) ? (
+                <div>
+                  <p>Your comment: </p>
+                  <p>
+                    {
+                      comments.find(
+                        (comment) =>
+                          String(comment.owner._id) === String(user._id)
+                      ).content
+                    }
+                    <span>
+                      <AiFillDelete onClick={commentDeleteHandler} />
+                    </span>
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={commentHandler}>
+                  <input
+                    type="text"
+                    placeholder="Comment..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                  <input type="submit" value="Post" />
+                </form>
+              )}
+            </div>
+            <div>
+              {comments
+                .filter(
+                  (comment) => String(comment.owner._id) !== String(user._id)
+                )
+                .map((comment) => (
+                  <div key={comment._id}>
+                    <img
+                      src={comment?.owner?.avatar.url}
+                      alt={comment?.owner?.name}
+                      height="50px"
+                      width="50px"
+                    />
+                    <p>{comment?.owner?.name}</p>
+                    <p>{comment?.content}</p>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

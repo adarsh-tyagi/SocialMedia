@@ -26,13 +26,12 @@ export const createComment = createAsyncThunk(
 // delete comment
 export const deleteComment = createAsyncThunk(
   "comment/deleteComment",
-  async (commentId) => {
+  async (postId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.delete(
-        `${BACKEND_URL}/comment/delete`,
-        commentId,
+        `${BACKEND_URL}/comment/delete/${postId}`,
         config
       );
       return data;
