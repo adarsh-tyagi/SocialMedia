@@ -12,7 +12,8 @@ exports.getHomePosts = catchAsyncError(async (req, res, next) => {
   const homePosts = await Post.find()
     .sort({ created_at: -1 })
     .limit(postPerPage)
-    .skip(postPerPage * (page - 1));
+    .skip(postPerPage * (page - 1))
+    .populate("owner");
 
   res.status(200).json({
     success: true,
@@ -81,12 +82,12 @@ exports.getPostDetails = catchAsyncError(async (req, res, next) => {
 
 // get user's posts
 exports.getUserPost = catchAsyncError(async (req, res, next) => {
-  const posts = await Post.find({ owner: req.params.userId });
+  const posts = await Post.find({ owner: req.params.userId }).populate("owner");
   res.status(200).json({ success: true, posts });
 });
 
 // get own posts
 exports.getOwnPosts = catchAsyncError(async (req, res, next) => {
-  const posts = await Post.find({ owner: req.user._id });
+  const posts = await Post.find({ owner: req.user._id }).populate("owner");
   res.status(200).json({ success: true, posts });
 });

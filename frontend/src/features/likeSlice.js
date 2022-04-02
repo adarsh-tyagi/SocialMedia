@@ -59,6 +59,7 @@ export const likeSlice = createSlice({
     likeCount: null,
     message: null,
     error: false,
+    currentPostId: null
   },
   reducers: {
     clearError: (state) => {
@@ -77,6 +78,7 @@ export const likeSlice = createSlice({
       state.message = action.payload.message;
       state.postLikes = action.payload.allLikes;
       state.likeCount = action.payload.allLikes.length;
+      state.currentPostId = action.payload.postId
     },
     [toggleLike.rejected]: (state, action) => {
       state.loading = false;
@@ -90,6 +92,7 @@ export const likeSlice = createSlice({
       state.loading = false;
       state.postLikes = action.payload.likes;
       state.likeCount = action.payload.likes.length;
+      state.currentPostId = action.payload.postId;
     },
     [postLikes.rejected]: (state, action) => {
       state.loading = false;

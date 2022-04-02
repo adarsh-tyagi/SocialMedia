@@ -5,6 +5,7 @@ import { TiSocialInstagram } from "react-icons/ti";
 import { Link } from "react-router-dom";
 import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
+import UserCard from "./UserCard";
 
 const Home = () => {
   const [page, setPage] = useState(1);
@@ -47,7 +48,11 @@ const Home = () => {
                 </button>
               )}
             </div>
-          </div>
+            </div>
+            
+            <div>
+              <UserCard />
+            </div>
         </div>
       ) : (
         <div className="home__msg">

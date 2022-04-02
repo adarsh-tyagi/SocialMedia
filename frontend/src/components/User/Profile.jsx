@@ -94,6 +94,7 @@ const Profile = () => {
             <p>Joined on {user?.created_at.slice(0, 10)}</p>
             <p>{followersList?.length} Followers</p>
             <p>{followingList?.length} Following</p>
+            <Link to="/liked-posts">Liked Posts</Link>
             <Link to="/update/profile">Update Profile</Link>
           </div>
           <div>

@@ -19,14 +19,14 @@ exports.createComment = catchAsyncError(async (req, res, next) => {
     );
     return res
       .status(201)
-      .json({ success: true, message: "Your comment is posted", allComments });
+      .json({ success: true, message: "Your comment is posted", allComments, postId });
   } else {
     const allComments = await Comment.find({ post: req.body.postId }).populate(
       "owner"
     );
     return res
       .status(200)
-      .json({ success: false, message: "You already commented", allComments });
+      .json({ success: false, message: "You already commented", allComments, postId });
   }
 });
 
@@ -45,7 +45,7 @@ exports.deleteComment = catchAsyncError(async (req, res, next) => {
   );
   res
     .status(200)
-    .json({ success: true, message: "Your comment is deleted", allComments });
+    .json({ success: true, message: "Your comment is deleted", allComments, postId: req.params.postId });
 });
 
 // get post's comments

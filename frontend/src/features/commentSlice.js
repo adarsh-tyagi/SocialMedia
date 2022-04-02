@@ -67,6 +67,7 @@ export const commentSlice = createSlice({
     error: null,
     comments: [],
     commentCount: null,
+    currentPostId: null
   },
   reducers: {
     clearError: (state) => {
@@ -85,6 +86,7 @@ export const commentSlice = createSlice({
       state.message = action.payload.message;
       state.comments = action.payload.allComments;
       state.commentCount = action.payload.allComments.length;
+      state.currentPostId = action.payload.postId;
     },
     [createComment.rejected]: (state, action) => {
       state.loading = false;
@@ -99,6 +101,7 @@ export const commentSlice = createSlice({
       state.message = action.payload.message;
       state.comments = action.payload.allComments;
       state.commentCount = action.payload.allComments.length;
+      state.currentPostId = action.payload.postId;
     },
     [deleteComment.rejected]: (state, action) => {
       state.loading = false;

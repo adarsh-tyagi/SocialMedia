@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "react-alert";
 import {
   clearError,
-  clearMessage,
   postLikes,
   toggleLike,
 } from "../../features/likeSlice";
@@ -30,37 +29,44 @@ const PostCard = ({ post }) => {
     message,
     error,
   } = useSelector((state) => state.likes);
+
   const {
     comments,
     commentCount,
     message: commentMessage,
     error: commentError,
   } = useSelector((state) => state.comments);
+  
   const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const alert = useAlert();
 
+  const boxOpenHandler = (e) => {
+    e.preventDefault();
+
+    // fetch likes and comments
+    dispatch(postLikes(String(post._id)));
+    dispatch(postComments(String(post._id)));
+
+    setOpenBox(true);
+  };
+
   const likeHandler = (e) => {
     e.preventDefault();
     dispatch(toggleLike(String(post._id)));
-    // dispatch(postLikes(String(post._id)));
   };
+
   const commentHandler = (e) => {
     e.preventDefault();
     dispatch(createComment({ content: comment, postId: String(post._id) }));
-    // dispatch(postComments(String(post._id)))
   };
 
   const commentDeleteHandler = (e) => {
     e.preventDefault();
     dispatch(deleteComment(String(post._id)));
+    setComment("");
   };
-
-  useEffect(() => {
-    dispatch(postLikes(String(post._id)));
-    dispatch(postComments(String(post._id)));
-  }, [dispatch, post]);
 
   useEffect(() => {
     // if (message) {
@@ -83,72 +89,78 @@ const PostCard = ({ post }) => {
 
   return (
     <div>
-      <img src={post?.image.url} alt="post" />
-      <p>{post?.caption}</p>
       <div>
-        <p onClick={likeHandler}>
-          {likes?.find((item) => String(item?.owner) === String(user?._id)) ? (
-            <AiFillLike />
-          ) : (
-            <AiOutlineLike />
-          )}
-          <span>{likeCount}</span>
-        </p>
-        <p onClick={() => setOpenBox(!openBox)}>
-          <AiOutlineComment />
-          <span>{commentCount}</span>
-        </p>
+        <img
+          src={post?.owner?.avatar?.url}
+          alt={post?.owner?.name}
+          height="30px"
+          width="30px"
+        />
+        <p>{post?.owner?.name}</p>
       </div>
+      <img src={post?.image.url} alt="post" />
+      <p>
+        <span>{String(post?.created_at).slice(0, 10)} </span>
+        {post?.caption}
+      </p>
+      <button onClick={(e) => boxOpenHandler(e)}>View Information</button>
 
       {openBox ? (
         <div>
+          <AiOutlineClose onClick={() => setOpenBox(false)} />
           <div>
-            <AiOutlineClose onClick={() => setOpenBox(false)} />
+            <p onClick={(e) => likeHandler(e)}>
+              {likes.find(
+                (item) => String(item.owner._id) === String(user._id)
+              ) ? (
+                <AiFillLike />
+              ) : (
+                <AiOutlineLike />
+              )}{" "}
+              <span>{likeCount}</span>
+            </p>
+            <p>
+              <AiOutlineComment /> {commentCount}
+            </p>
             <div>
               {comments.find(
-                (comment) => String(comment.owner._id) === String(user._id)
+                (item) => String(item.owner._id) === String(user._id)
               ) ? (
                 <div>
-                  <p>Your comment: </p>
+                  <p>Your comment</p>
                   <p>
                     {
                       comments.find(
-                        (comment) =>
-                          String(comment.owner._id) === String(user._id)
+                        (item) => String(item.owner._id) === String(user._id)
                       ).content
-                    }
-                    <span>
-                      <AiFillDelete onClick={commentDeleteHandler} />
-                    </span>
+                    }{" "}
+                    <AiFillDelete onClick={(e) => commentDeleteHandler(e)} />
                   </p>
                 </div>
               ) : (
-                <form onSubmit={commentHandler}>
+                <form onSubmit={(e) => commentHandler(e)}>
                   <input
                     type="text"
                     placeholder="Comment..."
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                   />
-                  <input type="submit" value="Post" />
+                  <input type="submit" value="Submit" />
                 </form>
               )}
             </div>
             <div>
               {comments
-                .filter(
-                  (comment) => String(comment.owner._id) !== String(user._id)
-                )
-                .map((comment) => (
-                  <div key={comment._id}>
+                .filter((item) => String(item.owner._id) !== String(user._id))
+                .map((item) => (
+                  <div key={item._id}>
                     <img
-                      src={comment?.owner?.avatar.url}
-                      alt={comment?.owner?.name}
-                      height="50px"
-                      width="50px"
+                      src={item.owner.avatar.url}
+                      alt={item.owner.name}
+                      height="30px"
+                      width="30px"
                     />
-                    <p>{comment?.owner?.name}</p>
-                    <p>{comment?.content}</p>
+                    <p>{item.content}</p>
                   </div>
                 ))}
             </div>

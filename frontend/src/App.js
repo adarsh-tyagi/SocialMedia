@@ -11,6 +11,7 @@ import Profile from "./components/User/Profile";
 import UpdateProfile from "./components/User/UpdateProfile";
 import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
+import LikedPost from "./components/Posts/LikedPost";
 
 function App() {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
@@ -33,7 +34,13 @@ function App() {
             <Route exact path="/profile" element={<Profile />} />
             <Route exact path="/update/profile" element={<UpdateProfile />} />
             <Route exact path="/password/forgot" element={<ForgotPassword />} />
-            <Route exact path="/password/reset/:token" element={<ResetPassword />} />
+            <Route
+              exact
+              path="/password/reset/:token"
+              element={<ResetPassword />}
+            />
+
+            <Route exact path="/liked-posts" element={<LikedPost />} />
           </Routes>
         </Router>
       )}
