@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "react-alert";
-import {
-  clearError,
-  postLikes,
-  toggleLike,
-} from "../../features/likeSlice";
+import { clearError, postLikes, toggleLike } from "../../features/likeSlice";
 import {
   createComment,
   deleteComment,
@@ -36,7 +32,7 @@ const PostCard = ({ post }) => {
     message: commentMessage,
     error: commentError,
   } = useSelector((state) => state.comments);
-  
+
   const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();

@@ -1,9 +1,23 @@
-import React from 'react'
+import React from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { MdOutlineAddAPhoto } from "react-icons/md";
 
 const UserCard = () => {
-  return (
-    <div>UserCard</div>
-  )
-}
+  const { user } = useSelector((state) => state.user);
 
-export default UserCard
+  return (
+    <div>
+      <img src={user.avatar.url} alt={user.name} height="50px" width="30px" />
+      <p>{user.name}</p>
+      <p>{user.bio}</p>
+      <Link to="/profile">View Profile</Link>
+      <Link to="/create/post">
+        <MdOutlineAddAPhoto />
+        <p>New Post</p>
+      </Link>
+    </div>
+  );
+};
+
+export default UserCard;

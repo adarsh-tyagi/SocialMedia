@@ -1,9 +1,9 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMyFollowers, getMyFollowing } from "../../features/followSlice";
-import { ownPosts } from "../../features/postSlice";
+import { deletePost, ownPosts } from "../../features/postSlice";
 import {
   clearError,
   clearMessage,
@@ -14,6 +14,7 @@ import {
 import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
 import { Link } from "react-router-dom";
+import { AiOutlineClose } from "react-icons/ai";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const Profile = () => {
     loading: postLoading,
     ownPosts: ownPost,
     error: postError,
+    message: postMessage,
   } = useSelector((state) => state.post);
   const {
     loading: followLoading,
@@ -33,12 +35,19 @@ const Profile = () => {
     followingList,
   } = useSelector((state) => state.follow);
 
+  const [openFollowerBox, setOpenFollowerBox] = useState(false);
+  const [openFollowingBox, setOpenFollowingBox] = useState(false);
+
   const logoutHandler = () => {
     dispatch(logoutUser());
   };
 
   const deleteHandler = () => {
     dispatch(deleteUser());
+  };
+
+  const postDeleteHandler = (postId) => {
+    dispatch(deletePost(postId));
   };
 
   useEffect(() => {
@@ -61,6 +70,11 @@ const Profile = () => {
       alert.success(message);
       dispatch(clearMessage());
     }
+    if (postMessage) {
+      alert.success(postMessage);
+      dispatch(clearMessage());
+      navigate("/profile");
+    }
     if (isDeleted) {
       dispatch(resetDelete());
       navigate("/signin");
@@ -78,6 +92,7 @@ const Profile = () => {
     followError,
     message,
     isDeleted,
+    postMessage
   ]);
 
   return (
@@ -92,9 +107,55 @@ const Profile = () => {
             <p>{user?.email}</p>
             <p>{user?.bio}</p>
             <p>Joined on {user?.created_at.slice(0, 10)}</p>
-            <p>{followersList?.length} Followers</p>
-            <p>{followingList?.length} Following</p>
-            <Link to="/liked-posts">Liked Posts</Link>
+
+            <p onClick={() => setOpenFollowerBox(true)}>
+              {followersList?.length} Followers
+            </p>
+            {openFollowerBox ? (
+              <div>
+                <AiOutlineClose onClick={() => setOpenFollowerBox(false)} />
+                <div>
+                  {followersList.map((item) => (
+                    <Link to={`/detail/${item.follower._id}`} key={item._id}>
+                      <img
+                        src={item.follower.avatar.url}
+                        alt={item.follower.name}
+                        height="30px"
+                        width="30px"
+                      />
+                      <p>{item.follower.name}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
+            <p onClick={() => setOpenFollowingBox(true)}>
+              {followingList?.length} Following
+            </p>
+            {openFollowingBox ? (
+              <div>
+                <AiOutlineClose onClick={() => setOpenFollowingBox(false)} />
+                <div>
+                  {followingList.map((item) => (
+                    <Link to={`/detail/${item.following._id}`} key={item._id}>
+                      <img
+                        src={item.following.avatar.url}
+                        alt={item.follower.name}
+                        height="30px"
+                        width="30px"
+                      />
+                      <p>{item.following.name}</p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+
             <Link to="/update/profile">Update Profile</Link>
           </div>
           <div>
@@ -103,7 +164,12 @@ const Profile = () => {
           </div>
           <div>
             {ownPost.map((post) => (
-              <PostCard key={post._id} post={post} />
+              <div key={post._id}>
+                <PostCard post={post} />
+                <button onClick={(e) => postDeleteHandler(post._id)}>
+                  Delete
+                </button>
+              </div>
             ))}
           </div>
         </div>

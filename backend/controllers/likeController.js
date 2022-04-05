@@ -43,6 +43,6 @@ exports.getPostLikes = catchAsyncError(async (req, res, next) => {
 exports.getUserLikes = catchAsyncError(async (req, res, next) => {
   const likedPosts = await Like.find({ owner: req.user._id })
     .populate("post")
-    .populate("owner");
+    .populate("owner")
   res.status(200).json({ success: true, likedPosts });
 });

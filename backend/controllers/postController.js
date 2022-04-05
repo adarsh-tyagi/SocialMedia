@@ -57,7 +57,7 @@ exports.createPost = catchAsyncError(async (req, res, next) => {
 // delete post
 exports.deletePost = catchAsyncError(async (req, res, next) => {
   const post = await Post.findOne({
-    _id: req.body.postId,
+    _id: req.params.postId,
     owner: req.user._id,
   });
   if (!post) {
@@ -88,6 +88,8 @@ exports.getUserPost = catchAsyncError(async (req, res, next) => {
 
 // get own posts
 exports.getOwnPosts = catchAsyncError(async (req, res, next) => {
-  const posts = await Post.find({ owner: req.user._id }).populate("owner");
+  const posts = await Post.find({ owner: req.user._id })
+    .populate("owner")
+    .sort({ created_at: -1 });
   res.status(200).json({ success: true, posts });
 });
