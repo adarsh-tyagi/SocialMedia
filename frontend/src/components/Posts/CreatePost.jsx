@@ -15,34 +15,33 @@ const CreatePost = () => {
   const [caption, setCaption] = useState("");
   const [postImage, setPostImage] = useState("");
 
-    const changeHandler = (e) => {
-      if (e.target.name === "postImage") {
-        const reader = new FileReader();
-        reader.onload = () => {
-          if (reader.readyState === 2) {
-            setPostImage(reader.result);
-          }
-        };
-        reader.readAsDataURL(e.target.files[0]);
-      } 
-      else {
-        setCaption(e.target.value);
-      }
+  const changeHandler = (e) => {
+    if (e.target.name === "postImage") {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setPostImage(reader.result);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setCaption(e.target.value);
+    }
   };
 
-    const submitHandler = (e) => {
-        e.preventDefault()
-        const myForm = new FormData()
-        myForm.set("caption", caption)
-        myForm.set("image", postImage)
-        dispatch(createPost(myForm))
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const myForm = new FormData();
+    myForm.set("caption", caption);
+    myForm.set("image", postImage);
+    dispatch(createPost(myForm));
   };
 
   useEffect(() => {
     if (message) {
       alert.success(message);
-        dispatch(clearMessage());
-        navigate("/profile")
+      dispatch(clearMessage());
+      navigate("/profile");
     }
     if (error) {
       alert.error(error);

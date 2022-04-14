@@ -118,6 +118,9 @@ export const postSlice = createSlice({
     postDetail: null,
     ownPosts: [],
     othersPosts: [],
+    userDetail: null,
+    otherUserFollowers: null,
+    otherUserFollowings: null,
   },
   reducers: {
     clearError: (state) => {
@@ -184,6 +187,9 @@ export const postSlice = createSlice({
     [userPosts.fulfilled]: (state, action) => {
       state.loading = false;
       state.othersPosts = action.payload.posts;
+      state.userDetail = action.payload.userDetail;
+      state.otherUserFollowers = action.payload.followers;
+      state.otherUserFollowings = action.payload.followings;
     },
     [userPosts.rejected]: (state, action) => {
       state.loading = false;

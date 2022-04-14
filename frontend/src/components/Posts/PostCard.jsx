@@ -14,6 +14,8 @@ import {
   AiOutlineClose,
   AiFillDelete,
 } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { createNotification } from "../../features/notificationSlice";
 
 const PostCard = ({ post }) => {
   const [openBox, setOpenBox] = useState(false);
@@ -51,11 +53,27 @@ const PostCard = ({ post }) => {
   const likeHandler = (e) => {
     e.preventDefault();
     dispatch(toggleLike(String(post._id)));
+    if (String(post.owner._id) !== String(user._id)) {
+      dispatch(
+        createNotification({
+          receiverId: post.owner._id,
+          content: `${user.name} liked your post.`,
+        })
+      );
+    }
   };
 
   const commentHandler = (e) => {
     e.preventDefault();
     dispatch(createComment({ content: comment, postId: String(post._id) }));
+    if (String(post.owner._id) !== String(user._id)) {
+      dispatch(
+        createNotification({
+          receiverId: post.owner._id,
+          content: `${user.name} commented on your post.`,
+        })
+      );
+    }
   };
 
   const commentDeleteHandler = (e) => {
@@ -92,7 +110,13 @@ const PostCard = ({ post }) => {
           height="30px"
           width="30px"
         />
-        <p>{post?.owner?.name}</p>
+        {post?.owner?._id === user?._id ? (
+          <p>{post?.owner?.name}</p>
+        ) : (
+          <Link to={`/user/detail/${post?.owner?._id}`}>
+            {post?.owner?.name}
+          </Link>
+        )}
       </div>
       <img src={post?.image.url} alt="post" />
       <p>

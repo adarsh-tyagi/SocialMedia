@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { loadUser } from "./features/userSlice";
@@ -12,22 +12,29 @@ import UpdateProfile from "./components/User/UpdateProfile";
 import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
 import CreatePost from "./components/Posts/CreatePost";
+import UserDetails from "./components/User/UserDetails";
 
 function App() {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [backdrop, setBackdrop] = useState(false);
 
   useEffect(() => {
     dispatch(loadUser());
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div className="app">
       {loading ? (
         <Loader />
       ) : (
         <Router>
-          <Header isAuthenticated={isAuthenticated} user={user} />
+          <Header
+            isAuthenticated={isAuthenticated}
+            user={user}
+            backdrop={backdrop}
+            setBackdrop={setBackdrop}
+          />
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/signin" element={<Signin />} />
@@ -39,7 +46,11 @@ function App() {
               path="/password/reset/:token"
               element={<ResetPassword />}
             />
-
+            <Route
+              exact
+              path="/user/detail/:userID"
+              element={<UserDetails />}
+            />
             <Route exact path="/create/post" element={<CreatePost />} />
           </Routes>
         </Router>

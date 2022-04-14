@@ -102,6 +102,7 @@ export const followSlice = createSlice({
     [followUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      state.followingList = action.payload.followingList
     },
     [followUser.rejected]: (state, action) => {
       state.loading = false;
@@ -114,6 +115,7 @@ export const followSlice = createSlice({
     [unfollowUser.fulfilled]: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      state.followingList = action.payload.followingList;
     },
     [unfollowUser.rejected]: (state, action) => {
       state.loading = false;

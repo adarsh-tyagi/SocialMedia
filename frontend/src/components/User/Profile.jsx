@@ -116,7 +116,7 @@ const Profile = () => {
                 <AiOutlineClose onClick={() => setOpenFollowerBox(false)} />
                 <div>
                   {followersList.map((item) => (
-                    <Link to={`/detail/${item.follower._id}`} key={item._id}>
+                    <Link to={`/user/detail/${item.follower._id}`} key={item._id}>
                       <img
                         src={item.follower.avatar.url}
                         alt={item.follower.name}
@@ -140,7 +140,7 @@ const Profile = () => {
                 <AiOutlineClose onClick={() => setOpenFollowingBox(false)} />
                 <div>
                   {followingList.map((item) => (
-                    <Link to={`/detail/${item.following._id}`} key={item._id}>
+                    <Link to={`/user/detail/${item.following._id}`} key={item._id}>
                       <img
                         src={item.following.avatar.url}
                         alt={item.follower.name}

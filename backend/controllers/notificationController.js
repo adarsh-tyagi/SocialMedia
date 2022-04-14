@@ -35,6 +35,9 @@ exports.deleteAllNotifications = catchAsyncError(async (req, res, next) => {
 
 // get all notification for user
 exports.getNotifications = catchAsyncError(async (req, res, next) => {
-  const notifications = await Notification.find({ receiver: req.user._id }).populate("sender");
+  const notifications = await Notification.find({ receiver: req.user._id })
+    .populate("sender")
+    .limit(10)
+    .sort({ created_at: -1 });
   res.status(200).json({ success: true, notifications });
 });

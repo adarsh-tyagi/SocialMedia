@@ -1,4 +1,6 @@
 const Post = require("../models/postModel");
+const User = require("../models/userModel");
+const Follow = require("../models/followModel");
 const Like = require("../models/likeModel");
 const Comment = require("../models/commentModel");
 const cloudinary = require("cloudinary");
@@ -82,8 +84,13 @@ exports.getPostDetails = catchAsyncError(async (req, res, next) => {
 
 // get user's posts
 exports.getUserPost = catchAsyncError(async (req, res, next) => {
-  const posts = await Post.find({ owner: req.params.userId }).populate("owner");
-  res.status(200).json({ success: true, posts });
+  const posts = await Post.find({ owner: req.params.userId }).populate("owner").sort({created_at: -1});
+  const userDetail = await User.findOne({ _id: req.params.userId });
+  const followers = await Follow.find({ following: req.params.userId });
+  const followings = await Follow.find({ follower: req.params.userId });
+  res
+    .status(200)
+    .json({ success: true, posts, userDetail, followers, followings });
 });
 
 // get own posts

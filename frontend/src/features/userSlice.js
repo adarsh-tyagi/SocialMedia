@@ -151,6 +151,7 @@ export const userDetails = createAsyncThunk(
         `${BACKEND_URL}/user/detail/${userId}`,
         config
       );
+      console.log(data.otherUser);
       return data;
     } catch (error) {
       throw error.response.data.message;
@@ -166,7 +167,7 @@ export const searchUser = createAsyncThunk(
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.get(
-        `${BACKEND_URL}/search?search=${search}`,
+        `${BACKEND_URL}/user/search?search=${search}`,
         config
       );
       return data;

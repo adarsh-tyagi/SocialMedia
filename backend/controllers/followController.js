@@ -10,10 +10,18 @@ exports.followUser = catchAsyncError(async (req, res, next) => {
     follower: req.user._id,
     following: followingId,
   });
-    
+
+  const follows = await Follow.find({ follower: req.user._id }).populate(
+    "following"
+  );
+
   res
     .status(200)
-    .json({ success: true, message: `You started following ${user.name}` });
+    .json({
+      success: true,
+      message: `You started following ${user.name}`,
+      followingList: follows,
+    });
 });
 
 // unfollow a user
@@ -25,9 +33,15 @@ exports.unfollowUser = catchAsyncError(async (req, res, next) => {
     follower: req.user._id,
   });
   await follow.remove();
-  res
-    .status(200)
-    .json({ success: true, message: `You unfollowed ${user.name}` });
+
+  const follows = await Follow.find({ follower: req.user._id }).populate(
+    "following"
+  );
+  res.status(200).json({
+    success: true,
+    message: `You unfollowed ${user.name}`,
+    followingList: follows,
+  });
 });
 
 // get all my followers
