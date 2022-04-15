@@ -16,13 +16,17 @@ exports.createNotification = catchAsyncError(async (req, res, next) => {
 // delete notification
 exports.deleteNotification = catchAsyncError(async (req, res, next) => {
   const notification = await Notification.findOne({
-    _id: req.body.notificationId,
+    _id: req.params.notificationId,
   });
   if (!notification) {
     return next(new ErrorHandler("No such notification exists", 400));
   }
   await notification.remove();
-  res.status(200).json({ success: true, message: "Notification removed" });
+  const notifications = await Notification.find({ receiver: req.user._id })
+    .populate("sender")
+    .limit(10)
+    .sort({ created_at: -1 });
+  res.status(200).json({ success: true, message: "Notification removed", notifications });
 });
 
 // delete all notifications

@@ -26,13 +26,12 @@ export const createNotification = createAsyncThunk(
 // delete a notification
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
-  async (notificationdata) => {
+  async (notificationId) => {
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
       const { data } = await axios.delete(
-        `${BACKEND_URL}/notification/delete`,
-        notificationdata,
+        `${BACKEND_URL}/notification/delete/${notificationId}`,
         config
       );
       return data;
@@ -49,7 +48,7 @@ export const deleteAllNotifications = createAsyncThunk(
     try {
       const socialmediatoken = localStorage.getItem("socialmediatoken");
       const config = { headers: { Authorization: socialmediatoken } };
-      const { data } = await axios.delete(
+      const { data } = await axios.get(
         `${BACKEND_URL}/notification/delete/all`,
         config
       );
@@ -84,10 +83,10 @@ export const notificationSlice = createSlice({
     notifications: [],
   },
   reducers: {
-    clearError: (state) => {
+    clearNotificationError: (state) => {
       state.error = null;
     },
-    clearMessage: (state) => {
+    clearNotificationMessage: (state) => {
       state.message = null;
     },
   },
@@ -109,6 +108,7 @@ export const notificationSlice = createSlice({
     [deleteNotification.fulfilled]: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      state.notifications = action.payload.notifications
     },
     [deleteNotification.rejected]: (state, action) => {
       state.loading = false;
@@ -121,6 +121,7 @@ export const notificationSlice = createSlice({
     [deleteAllNotifications.fulfilled]: (state, action) => {
       state.loading = false;
       state.message = action.payload.message;
+      state.notifications = []
     },
     [deleteAllNotifications.rejected]: (state, action) => {
       state.loading = false;
@@ -141,5 +142,5 @@ export const notificationSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage } = notificationSlice.actions;
+export const { clearNotificationError, clearNotificationMessage } = notificationSlice.actions;
 export default notificationSlice.reducer;

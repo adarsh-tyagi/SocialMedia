@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "react-alert";
-import { clearError, postLikes, toggleLike } from "../../features/likeSlice";
+import { clearLikeError, postLikes, toggleLike } from "../../features/likeSlice";
 import {
   createComment,
   deleteComment,
   postComments,
+  clearCommentError,
+  clearCommentMessage
 } from "../../features/commentSlice";
 import {
   AiOutlineLike,
@@ -93,11 +95,11 @@ const PostCard = ({ post }) => {
     // }
     if (error) {
       alert.error(error);
-      dispatch(clearError());
+      dispatch(clearLikeError());
     }
     if (commentError) {
       alert.error(commentError);
-      dispatch(clearError());
+      dispatch(clearCommentError());
     }
   }, [alert, error, message, commentError, commentMessage, dispatch]);
 

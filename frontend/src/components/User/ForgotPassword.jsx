@@ -2,8 +2,8 @@ import React, { useEffect, useState, Fragment } from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  clearError,
-  clearMessage,
+  clearUserError,
+  clearUserMessage,
   forgotPassword,
 } from "../../features/userSlice";
 import { FaEnvelope } from "react-icons/fa";
@@ -24,11 +24,11 @@ const ForgotPassword = () => {
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(clearError());
+      dispatch(clearUserError());
     }
     if (message) {
       alert.success(message);
-      dispatch(clearMessage());
+      dispatch(clearUserMessage());
     }
   }, [alert, dispatch, error, message]);
 

@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { useAlert } from 'react-alert'
 import {useSelector, useDispatch} from "react-redux"
 import { useNavigate, useParams } from 'react-router-dom'
-import { clearError, clearMessage, resetPassword } from '../../features/userSlice'
+import { clearUserError, clearUserMessage, resetPassword } from '../../features/userSlice'
 import Loader from '../Loader/Loader'
 import { MdPassword } from "react-icons/md"
 import {RiLockPasswordFill} from "react-icons/ri"
@@ -30,11 +30,11 @@ const ResetPassword = () => {
   useEffect(() => {
     if (error) {
       alert.error(error)
-      dispatch(clearError())
+      dispatch(clearUserError())
     }
     if (message) {
       alert.success(message)
-      dispatch(clearMessage())
+      dispatch(clearUserMessage())
       navigate("/signin")
     }
   }, [error, message, dispatch, alert, navigate])

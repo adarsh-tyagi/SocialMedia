@@ -3,13 +3,14 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
-  clearMessage,
+  clearFollowMessage,
+  clearFollowError,
   followUser,
   getMyFollowing,
   unfollowUser,
 } from "../../features/followSlice";
 import { userPosts } from "../../features/postSlice";
-import { clearError} from "../../features/userSlice";
+import { clearUserError} from "../../features/userSlice";
 import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
 import {createNotification} from "../../features/notificationSlice"
@@ -66,15 +67,15 @@ const UserDetails = () => {
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(clearError());
+      dispatch(clearUserError());
     }
     if (followError) {
       alert.error(followError);
-      dispatch(clearError());
+      dispatch(clearFollowError());
     }
     if (message) {
       alert.success(message);
-      dispatch(clearMessage());
+      dispatch(clearFollowMessage());
     }
   }, [dispatch, error, alert, followError, message]);
 
@@ -91,11 +92,11 @@ const UserDetails = () => {
             <p>Followers {otherUserFollowers?.length}</p>
             <p>Following {otherUserFollowings?.length}</p>
             {followingList?.find(
-              (item) => String(item.following._id) === String(userDetail._id)
+              (item) => String(item.following._id) === String(userDetail?._id)
             ) ? (
-              <button onClick={unfollowHandler}>Unfollow</button>
+              <button onClick={(e) => unfollowHandler(e)}>Unfollow</button>
             ) : (
-              <button onClick={followHandler}>Follow</button>
+              <button onClick={(e) => followHandler(e)}>Follow</button>
             )}
           </div>
           <div>

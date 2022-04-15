@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TiSocialInstagram } from "react-icons/ti";
-import {
-  MdNotificationsNone,
-  MdNotifications,
-  MdOutlineSearch,
-} from "react-icons/md";
+import { MdClose, MdNotifications, MdOutlineSearch } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUser } from "../../features/userSlice";
 import Backdrop from "@mui/material/Backdrop";
-import { getNotifications } from "../../features/notificationSlice";
+import {
+  deleteAllNotifications,
+  deleteNotification,
+  getNotifications,
+} from "../../features/notificationSlice";
 
 const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -31,8 +31,15 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
     setBackdrop(false);
   };
 
-  const deleteNotification = () => {};
-  const deleteAllNotification = () => {};
+  const deleteNotificationHandler = (e, notificationId) => {
+    e.preventDefault();
+    dispatch(deleteNotification(notificationId));
+  };
+
+  const deleteAllNotificationHandler = (e) => {
+    e.preventDefault();
+    dispatch(deleteAllNotifications());
+  };
 
   const toggleScreen = () => {
     window.innerWidth <= 600 ? setScreen(true) : setScreen(false);
@@ -88,8 +95,20 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
           {notifications.length > 0 ? (
             <div>
               {notifications.map((item) => (
-                <p key={item._id}>{item.content}</p>
+                <p key={item._id}>
+                  {item.content}
+                  <span>
+                    <MdClose
+                      onClick={(e) =>
+                        deleteNotificationHandler(e, String(item._id))
+                      }
+                    />
+                  </span>
+                </p>
               ))}
+              <button onClick={(e) => deleteAllNotificationHandler(e)}>
+                Remove All
+              </button>
             </div>
           ) : (
             <p>No New Notifications</p>

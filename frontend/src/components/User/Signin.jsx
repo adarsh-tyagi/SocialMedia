@@ -10,8 +10,8 @@ import {
 } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  clearError,
-  clearMessage,
+  clearUserError,
+  clearUserMessage,
   loginUser,
   registerUser,
 } from "../../features/userSlice";
@@ -72,11 +72,11 @@ const Signin = () => {
     }
     if (error) {
       alert.error(error);
-      dispatch(clearError());
+      dispatch(clearUserError());
     }
     if (message) {
       alert.success(message);
-      dispatch(clearMessage());
+      dispatch(clearUserMessage());
     }
   }, [isAuthenticated, error, dispatch, alert, navigate, message]);
 

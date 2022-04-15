@@ -88,10 +88,10 @@ export const followSlice = createSlice({
     followingList: [],
   },
   reducers: {
-    clearError: (state) => {
+    clearFollowError: (state) => {
       state.error = null;
     },
-    clearMessage: (state) => {
+    clearFollowMessage: (state) => {
       state.message = null;
     },
   },
@@ -148,5 +148,5 @@ export const followSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage } = followSlice.actions;
+export const { clearFollowError, clearFollowMessage } = followSlice.actions;
 export default followSlice.reducer;

@@ -70,10 +70,10 @@ export const commentSlice = createSlice({
     currentPostId: null
   },
   reducers: {
-    clearError: (state) => {
+    clearCommentError: (state) => {
       state.error = null;
     },
-    clearMessage: (state) => {
+    clearCommentMessage: (state) => {
       state.message = null;
     },
   },
@@ -123,5 +123,5 @@ export const commentSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage } = commentSlice.actions;
+export const { clearCommentError, clearCommentMessage } = commentSlice.actions;
 export default commentSlice.reducer;

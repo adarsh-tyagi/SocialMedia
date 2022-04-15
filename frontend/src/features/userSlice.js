@@ -191,10 +191,10 @@ export const userSlice = createSlice({
     searchResult: [],
   },
   reducers: {
-    clearError: (state) => {
+    clearUserError: (state) => {
       state.error = null;
     },
-    clearMessage: (state) => {
+    clearUserMessage: (state) => {
       state.message = null;
     },
     resetUpdate: (state) => {
@@ -339,6 +339,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage, resetUpdate, resetDelete } =
+export const { clearUserError, clearUserMessage, resetUpdate, resetDelete } =
   userSlice.actions;
 export default userSlice.reducer;

@@ -3,8 +3,8 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  clearError,
-  clearMessage,
+  clearUserError,
+  clearUserMessage,
   resetUpdate,
   updateUser,
 } from "../../features/userSlice";
@@ -51,11 +51,11 @@ const UpdateProfile = () => {
   useEffect(() => {
     if (error) {
       alert.error(error);
-      dispatch(clearError());
+      dispatch(clearUserError());
     }
     if (message) {
       alert.success(message);
-      dispatch(clearMessage());
+      dispatch(clearUserMessage());
     }
     if (isUpdated) {
       dispatch(resetUpdate());

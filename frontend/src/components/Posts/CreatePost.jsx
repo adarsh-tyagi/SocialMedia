@@ -2,7 +2,11 @@ import React, { useEffect, useState, Fragment } from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { clearError, clearMessage, createPost } from "../../features/postSlice";
+import {
+  clearPostError,
+  clearPostMessage,
+  createPost,
+} from "../../features/postSlice";
 import Loader from "../Loader/Loader";
 import { MdOutlineAddPhotoAlternate, MdOutlineMessage } from "react-icons/md";
 
@@ -40,12 +44,12 @@ const CreatePost = () => {
   useEffect(() => {
     if (message) {
       alert.success(message);
-      dispatch(clearMessage());
+      dispatch(clearPostMessage());
       navigate("/profile");
     }
     if (error) {
       alert.error(error);
-      dispatch(clearError());
+      dispatch(clearPostError());
     }
   }, [alert, dispatch, error, message, navigate]);
 

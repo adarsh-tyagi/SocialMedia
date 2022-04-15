@@ -2,11 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMyFollowers, getMyFollowing } from "../../features/followSlice";
-import { deletePost, ownPosts } from "../../features/postSlice";
+import { getMyFollowers, getMyFollowing, clearFollowError } from "../../features/followSlice";
+import { deletePost, ownPosts, clearPostError, clearPostMessage } from "../../features/postSlice";
 import {
-  clearError,
-  clearMessage,
+  clearUserError,
+  clearUserMessage,
   deleteUser,
   logoutUser,
   resetDelete,
@@ -56,23 +56,23 @@ const Profile = () => {
     }
     if (error) {
       alert.error(error);
-      dispatch(clearError());
+      dispatch(clearUserError());
     }
     if (postError) {
       alert.error(postError);
-      dispatch(clearError());
+      dispatch(clearPostError());
     }
     if (followError) {
       alert.error(followError);
-      dispatch(clearError());
+      dispatch(clearFollowError());
     }
     if (message) {
       alert.success(message);
-      dispatch(clearMessage());
+      dispatch(clearUserMessage());
     }
     if (postMessage) {
       alert.success(postMessage);
-      dispatch(clearMessage());
+      dispatch(clearPostMessage());
       navigate("/profile");
     }
     if (isDeleted) {

@@ -62,10 +62,10 @@ export const likeSlice = createSlice({
     currentPostId: null
   },
   reducers: {
-    clearError: (state) => {
+    clearLikeError: (state) => {
       state.error = null;
     },
-    clearMessage: (state) => {
+    clearLikeMessage: (state) => {
       state.message = null;
     },
   },
@@ -113,5 +113,5 @@ export const likeSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage } = likeSlice.actions;
+export const { clearLikeError, clearLikeMessage } = likeSlice.actions;
 export default likeSlice.reducer;

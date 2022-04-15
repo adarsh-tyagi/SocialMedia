@@ -123,10 +123,10 @@ export const postSlice = createSlice({
     otherUserFollowings: null,
   },
   reducers: {
-    clearError: (state) => {
+    clearPostError: (state) => {
       state.error = null;
     },
-    clearMessage: (state) => {
+    clearPostMessage: (state) => {
       state.message = null;
     },
   },
@@ -210,5 +210,5 @@ export const postSlice = createSlice({
   },
 });
 
-export const { clearError, clearMessage } = postSlice.actions;
+export const { clearPostError, clearPostMessage } = postSlice.actions;
 export default postSlice.reducer;
