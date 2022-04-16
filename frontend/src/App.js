@@ -13,6 +13,7 @@ import ForgotPassword from "./components/User/ForgotPassword";
 import ResetPassword from "./components/User/ResetPassword";
 import CreatePost from "./components/Posts/CreatePost";
 import UserDetails from "./components/User/UserDetails";
+import ProtectRoute from "./ProtectRoute";
 
 function App() {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
@@ -38,8 +39,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/signin" element={<Signin />} />
-            <Route exact path="/profile" element={<Profile />} />
-            <Route exact path="/update/profile" element={<UpdateProfile />} />
+
             <Route exact path="/password/forgot" element={<ForgotPassword />} />
             <Route
               exact
@@ -48,10 +48,24 @@ function App() {
             />
             <Route
               exact
-              path="/user/detail/:userID"
-              element={<UserDetails />}
+              path="/profile"
+              element={<ProtectRoute component={Profile} />}
             />
-            <Route exact path="/create/post" element={<CreatePost />} />
+            <Route
+              exact
+              path="/update/profile"
+              element={<ProtectRoute component={UpdateProfile} />}
+            />
+            <Route
+              exact
+              path="/user/detail/:userID"
+              element={<ProtectRoute component={UserDetails} />}
+            />
+            <Route
+              exact
+              path="/create/post"
+              element={<ProtectRoute component={CreatePost} />}
+            />
           </Routes>
         </Router>
       )}
