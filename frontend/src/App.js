@@ -14,11 +14,23 @@ import ResetPassword from "./components/User/ResetPassword";
 import CreatePost from "./components/Posts/CreatePost";
 import UserDetails from "./components/User/UserDetails";
 import ProtectRoute from "./ProtectRoute";
+import { io } from "socket.io-client";
 
 function App() {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [backdrop, setBackdrop] = useState(false);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    setSocket(io("http://localhost:5000"));
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      socket?.emit("newUser", user?._id);
+    }
+  }, [socket, user,isAuthenticated]);
 
   useEffect(() => {
     dispatch(loadUser());
@@ -35,9 +47,10 @@ function App() {
             user={user}
             backdrop={backdrop}
             setBackdrop={setBackdrop}
+            socket={socket}
           />
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/" element={<Home socket={socket} />} />
             <Route exact path="/signin" element={<Signin />} />
 
             <Route exact path="/password/forgot" element={<ForgotPassword />} />
@@ -49,22 +62,24 @@ function App() {
             <Route
               exact
               path="/profile"
-              element={<ProtectRoute component={Profile} />}
+              element={<ProtectRoute component={Profile} socket={socket} />}
             />
             <Route
               exact
               path="/update/profile"
-              element={<ProtectRoute component={UpdateProfile} />}
+              element={
+                <ProtectRoute component={UpdateProfile} socket={socket} />
+              }
             />
             <Route
               exact
               path="/user/detail/:userID"
-              element={<ProtectRoute component={UserDetails} />}
+              element={<ProtectRoute component={UserDetails} socket={socket} />}
             />
             <Route
               exact
               path="/create/post"
-              element={<ProtectRoute component={CreatePost} />}
+              element={<ProtectRoute component={CreatePost} socket={socket} />}
             />
           </Routes>
         </Router>

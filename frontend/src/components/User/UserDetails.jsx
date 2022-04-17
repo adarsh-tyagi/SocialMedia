@@ -10,14 +10,14 @@ import {
   unfollowUser,
 } from "../../features/followSlice";
 import { userPosts } from "../../features/postSlice";
-import { clearUserError} from "../../features/userSlice";
+import { clearUserError } from "../../features/userSlice";
 import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
-import {createNotification} from "../../features/notificationSlice"
+import { createNotification } from "../../features/notificationSlice";
 
-const UserDetails = () => {
+const UserDetails = ({ socket }) => {
   const { userID } = useParams();
-  const {user} = useSelector(state => state.user)
+  const { user } = useSelector((state) => state.user);
   const {
     loading,
     othersPosts,
@@ -38,25 +38,35 @@ const UserDetails = () => {
   const followHandler = (e) => {
     e.preventDefault();
     dispatch(followUser({ followingId: userID }));
-    dispatch(userPosts(String(userID)))
-    dispatch(
-      createNotification({
-        receiverId: userID,
-        content: `${user.name} started following you.`,
-      })
-    );
+    dispatch(userPosts(String(userID)));
+    // dispatch(
+    //   createNotification({
+    //     receiverId: userID,
+    //     content: `${user.name} started following you.`,
+    //   })
+    // );
+    socket.emit("sendNotification", {
+      sender: user._id,
+      receiver: userID,
+      content: `${user.name} started following you`,
+    });
   };
 
   const unfollowHandler = (e) => {
     e.preventDefault();
     dispatch(unfollowUser({ followingId: userID }));
-    dispatch(userPosts(String(userID)))
-    dispatch(
-      createNotification({
-        receiverId: userID,
-        content: `${user.name} unfollowed you.`,
-      })
-    );
+    dispatch(userPosts(String(userID)));
+    // dispatch(
+    //   createNotification({
+    //     receiverId: userID,
+    //     content: `${user.name} unfollowed you.`,
+    //   })
+    // );
+    socket.emit("sendNotification", {
+      sender: user._id,
+      receiver: userID,
+      content: `${user.name} unfollowed you`,
+    });
   };
 
   useEffect(() => {

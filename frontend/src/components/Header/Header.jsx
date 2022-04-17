@@ -11,14 +11,16 @@ import {
   getNotifications,
 } from "../../features/notificationSlice";
 
-const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
+const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [notificationBox, setNotificationBox] = useState(false);
   const [screen, setScreen] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
 
+  const [notifications, setNotifications] = useState([])
+
   const { loading, searchResult } = useSelector((state) => state.user);
-  const { notifications } = useSelector((state) => state.notification);
+  // const { notifications } = useSelector((state) => state.notification);
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
@@ -45,9 +47,15 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
     window.innerWidth <= 600 ? setScreen(true) : setScreen(false);
   };
 
+  // useEffect(() => {
+  //   dispatch(getNotifications());
+  // }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getNotifications());
-  }, [dispatch]);
+    socket.on("getNotification", (data) => {
+      setNotifications((prev) => [...prev, data])
+    })
+  }, [socket])
 
   useEffect(() => {
     toggleScreen();
