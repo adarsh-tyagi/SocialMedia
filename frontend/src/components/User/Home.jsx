@@ -7,7 +7,7 @@ import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
 import UserCard from "./UserCard";
 
-const Home = () => {
+const Home = ({socket}) => {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const { loading, isAuthenticated } = useSelector((state) => state.user);
@@ -30,7 +30,7 @@ const Home = () => {
         <div className="home">
           <div className="home__posts">
             {homePost.map((post) => (
-              <PostCard key={post._id} post={post} />
+              <PostCard key={post._id} post={post} socket={socket} />
             ))}
             <div>
               {page > 1 ? (

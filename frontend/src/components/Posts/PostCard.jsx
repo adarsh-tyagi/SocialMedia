@@ -19,7 +19,7 @@ import {
 import { Link } from "react-router-dom";
 import { createNotification } from "../../features/notificationSlice";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, socket }) => {
   const [openBox, setOpenBox] = useState(false);
   const [comment, setComment] = useState("");
 
@@ -56,12 +56,17 @@ const PostCard = ({ post }) => {
     e.preventDefault();
     dispatch(toggleLike(String(post._id)));
     if (String(post.owner._id) !== String(user._id)) {
-      dispatch(
-        createNotification({
-          receiverId: post.owner._id,
-          content: `${user.name} liked your post.`,
-        })
-      );
+      // dispatch(
+      //   createNotification({
+      //     receiverId: post.owner._id,
+      //     content: `${user.name} liked your post.`,
+      //   })
+      // );
+      socket.emit("sendNotification", {
+        sender: user._id,
+        receiver: post.owner._id,
+        content: `${user.name} liked your post`,
+      });
     }
   };
 
@@ -69,12 +74,17 @@ const PostCard = ({ post }) => {
     e.preventDefault();
     dispatch(createComment({ content: comment, postId: String(post._id) }));
     if (String(post.owner._id) !== String(user._id)) {
-      dispatch(
-        createNotification({
-          receiverId: post.owner._id,
-          content: `${user.name} commented on your post.`,
-        })
-      );
+      // dispatch(
+      //   createNotification({
+      //     receiverId: post.owner._id,
+      //     content: `${user.name} commented on your post.`,
+      //   })
+      // );
+      socket.emit("sendNotification", {
+        sender: user._id,
+        receiver: post.owner._id,
+        content: `${user.name} commented on your post`,
+      });
     }
   };
 

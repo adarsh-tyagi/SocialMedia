@@ -62,11 +62,11 @@ const UserDetails = ({ socket }) => {
     //     content: `${user.name} unfollowed you.`,
     //   })
     // );
-    socket.emit("sendNotification", {
-      sender: user._id,
-      receiver: userID,
-      content: `${user.name} unfollowed you`,
-    });
+    // socket.emit("sendNotification", {
+    //   sender: user._id,
+    //   receiver: userID,
+    //   content: `${user.name} unfollowed you`,
+    // });
   };
 
   useEffect(() => {

@@ -9,6 +9,7 @@ import {
   deleteAllNotifications,
   deleteNotification,
   getNotifications,
+  setNotifications,
 } from "../../features/notificationSlice";
 
 const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
@@ -17,10 +18,10 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
   const [screen, setScreen] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
 
-  const [notifications, setNotifications] = useState([])
+  // const [notifications, setNotifications] = useState(null)
 
   const { loading, searchResult } = useSelector((state) => state.user);
-  // const { notifications } = useSelector((state) => state.notification);
+  const { notifications } = useSelector((state) => state.notification);
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
@@ -53,9 +54,10 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
 
   useEffect(() => {
     socket.on("getNotification", (data) => {
-      setNotifications((prev) => [...prev, data])
-    })
-  }, [socket])
+      // setNotifications(data)
+      dispatch(setNotifications(data));
+    });
+  }, [socket]);
 
   useEffect(() => {
     toggleScreen();
@@ -100,9 +102,9 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
       <MdNotifications onClick={() => setNotificationBox(!notificationBox)} />
       {notificationBox ? (
         <div>
-          {notifications.length > 0 ? (
+          {notifications?.length > 0 ? (
             <div>
-              {notifications.map((item) => (
+              {notifications?.map((item) => (
                 <p key={item._id}>
                   {item.content}
                   <span>

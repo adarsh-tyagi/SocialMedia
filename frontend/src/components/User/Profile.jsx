@@ -16,7 +16,7 @@ import PostCard from "../Posts/PostCard";
 import { Link } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 
-const Profile = () => {
+const Profile = ({socket}) => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
@@ -165,7 +165,7 @@ const Profile = () => {
           <div>
             {ownPost.map((post) => (
               <div key={post._id}>
-                <PostCard post={post} />
+                <PostCard post={post} socket={socket} />
                 <button onClick={(e) => postDeleteHandler(post._id)}>
                   Delete
                 </button>
