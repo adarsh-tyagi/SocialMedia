@@ -13,7 +13,7 @@ import { userPosts } from "../../features/postSlice";
 import { clearUserError } from "../../features/userSlice";
 import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
-import { createNotification } from "../../features/notificationSlice";
+// import { createNotification } from "../../features/notificationSlice";
 
 const UserDetails = ({ socket }) => {
   const { userID } = useParams();

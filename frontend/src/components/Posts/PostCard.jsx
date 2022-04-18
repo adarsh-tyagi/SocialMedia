@@ -7,7 +7,7 @@ import {
   deleteComment,
   postComments,
   clearCommentError,
-  clearCommentMessage
+  // clearCommentMessage
 } from "../../features/commentSlice";
 import {
   AiOutlineLike,
@@ -17,7 +17,7 @@ import {
   AiFillDelete,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { createNotification } from "../../features/notificationSlice";
+// import { createNotification } from "../../features/notificationSlice";
 
 const PostCard = ({ post, socket }) => {
   const [openBox, setOpenBox] = useState(false);

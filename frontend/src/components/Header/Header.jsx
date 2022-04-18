@@ -8,7 +8,6 @@ import Backdrop from "@mui/material/Backdrop";
 import {
   deleteAllNotifications,
   deleteNotification,
-  getNotifications,
   setNotifications,
 } from "../../features/notificationSlice";
 
@@ -57,7 +56,7 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
       // setNotifications(data)
       dispatch(setNotifications(data));
     });
-  }, [socket]);
+  }, [socket, dispatch]);
 
   useEffect(() => {
     toggleScreen();
