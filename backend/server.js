@@ -2,8 +2,8 @@ const cloudinary = require("cloudinary");
 const connectDB = require("./config/database");
 // const { Server } = require("socket.io");
 const app = require("./app");
-const server = require("http").createServer(app)
-const Notification = require("./models/notificationModel")
+const server = require("http").createServer(app);
+const Notification = require("./models/notificationModel");
 
 // using env properties
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -46,31 +46,41 @@ const getUser = (userId) => {
   return onlineUsers.find((user) => user.userId === userId);
 };
 
-io.on('connection', (socket) => {
+io.on("connection", (socket) => {
   socket.on("newUser", async (userId) => {
-    addNewUser(userId, socket.id)
-    console.log("new user added")
-    const receiver = getUser(userId)
-    let notifications = await Notification.find({ receiver: userId }).populate("sender")
+    addNewUser(userId, socket.id);
+    console.log("new user added");
+    const receiver = getUser(userId);
+    let notifications = await Notification.find({ receiver: userId })
+      .populate("sender")
+      .limit(10)
+      .sort({ created_at: -1 });
     if (receiver) {
-      io.to(receiver.socketId).emit("getNotification", notifications)
+      io.to(receiver.socketId).emit("getNotification", notifications);
     }
-  })
+  });
 
   socket.on("sendNotification", async ({ sender, receiver, content }) => {
-    const notification = await Notification.create({ sender, receiver, content })
-    await notification.save()
-    const receiverUser = getUser(receiver)
-    let notifications = await Notification.find({ receiver: receiver }).populate("sender")
+    const notification = await Notification.create({
+      sender,
+      receiver,
+      content,
+    });
+    await notification.save();
+    const receiverUser = getUser(receiver);
+    let notifications = await Notification.find({ receiver: receiver })
+      .populate("sender")
+      .limit(10)
+      .sort({ created_at: -1 });
     if (receiverUser) {
-      io.to(receiverUser.socketId).emit("getNotification", notifications)
+      io.to(receiverUser.socketId).emit("getNotification", notifications);
     }
-  })
+  });
 
   socket.on("disconnect", () => {
-    removeUser(socket.id)
-  })
-})
+    removeUser(socket.id);
+  });
+});
 
 // connect DB and start server
 const start = () => {
