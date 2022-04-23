@@ -10,6 +10,7 @@ import {
   deleteNotification,
   setNotifications,
 } from "../../features/notificationSlice";
+import "./Header.css"
 
 const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -66,43 +67,63 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
 
   return (
     <div className="header">
-      <Link to="/">
-        <TiSocialInstagram /> PhotoGram
+      <Link to="/" className="header__logo">
+        <TiSocialInstagram /> {!screen && 'PhotoGram'}
       </Link>
-      {openSearch && screen ? (
-        <div className="header__div1">
-          <form onSubmit={submitHandler}>
-            <input
-              type="text"
-              placeholder="Search people"
-              onChange={(e) => setSearchTerm(e.target.value)}
-              value={searchTerm}
-            />
-          </form>
-        </div>
-      ) : (
-        ""
-      )}
-      {screen ? (
-        <MdOutlineSearch onClick={() => setOpenSearch(!openSearch)} />
-      ) : (
-        <div className="header__div1">
-          <form onSubmit={submitHandler}>
-            <input
-              type="text"
-              placeholder="Search People"
-              onChange={(e) => setSearchTerm(e.target.value)}
-              value={searchTerm}
-            />
-          </form>
-        </div>
-      )}
 
-      <MdNotifications onClick={() => setNotificationBox(!notificationBox)} />
+      <div className="header__search">
+        {/* {openSearch && screen ? (
+          <div className="header__div1">
+            <form onSubmit={submitHandler}>
+              <input
+                type="text"
+                placeholder="Search people"
+                onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm}
+              />
+            </form>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {screen ? (
+          <MdOutlineSearch onClick={() => setOpenSearch(!openSearch)} />
+        ) : ( */}
+          <div className="header__div1">
+            <form onSubmit={submitHandler}>
+              <input
+                type="text"
+                placeholder="Search People"
+                onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm}
+              />
+            </form>
+          </div>
+        {/* )} */}
+      </div>
+
+      <div className="header__user">
+        <MdNotifications onClick={() => setNotificationBox(!notificationBox)} />
+
+
+          {isAuthenticated ? (
+            <Link to="/profile">
+              <img
+                src={user.avatar.url}
+                alt={user.name}
+              />
+            </Link>
+          ) : (
+            <Link to="/signin" className="header__signin">Sign In</Link>
+          )}
+      
+      </div>
+
       {notificationBox ? (
-        <div>
+        <div className="notification__container">
           {notifications?.length > 0 ? (
-            <div>
+            <div className="notification__box">
               {notifications?.map((item) => (
                 <p key={item._id}>
                   {item.content}
@@ -126,20 +147,6 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
       ) : (
         ""
       )}
-      <div className="header__div2">
-        {isAuthenticated ? (
-          <Link to="/profile">
-            <img
-              src={user.avatar.url}
-              alt={user.name}
-              height="50px"
-              width="50px"
-            />
-          </Link>
-        ) : (
-          <Link to="/signin">Sign In</Link>
-        )}
-      </div>
       <Backdrop
         sx={{
           color: "#fff",
@@ -157,7 +164,8 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
               ?.filter((item) => String(item._id) !== String(user._id))
               .map((item) => (
                 <Link to={`/user/detail/${String(item._id)}`} key={item._id}>
-                  {item.name}
+                  <img src={item?.avatar.url} alt={item.name} />
+                  <p>{item.name}</p>
                 </Link>
               ))
           )}

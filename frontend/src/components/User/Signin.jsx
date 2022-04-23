@@ -16,6 +16,7 @@ import {
   registerUser,
 } from "../../features/userSlice";
 import Loader from "../Loader/Loader";
+import "./Signin.css"
 
 const Signin = () => {
   const dispatch = useDispatch();

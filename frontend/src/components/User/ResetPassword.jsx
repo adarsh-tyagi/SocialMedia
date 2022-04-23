@@ -5,7 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { clearUserError, clearUserMessage, resetPassword } from '../../features/userSlice'
 import Loader from '../Loader/Loader'
 import { MdPassword } from "react-icons/md"
-import {RiLockPasswordFill} from "react-icons/ri"
+import { RiLockPasswordFill } from "react-icons/ri"
+import "./Signin.css"
 
 const ResetPassword = () => {
   const {loading, message, error } = useSelector(state => state.user)
@@ -44,7 +45,7 @@ const ResetPassword = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="update__container">
+        <div className="login__container">
           <form onSubmit={submitHandler}>
             <div>
               <MdPassword />

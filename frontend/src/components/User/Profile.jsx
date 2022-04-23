@@ -15,6 +15,7 @@ import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
 import { Link } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
+import "./Profile.css"
 
 const Profile = ({socket}) => {
   const dispatch = useDispatch();
@@ -100,8 +101,8 @@ const Profile = ({socket}) => {
       {loading || postLoading || followLoading ? (
         <Loader />
       ) : (
-        <div>
-          <div>
+        <div className="profile__container">
+          <div className="profile__info">
             <img src={user?.avatar?.url} alt={user?.name} />
             <p>{user?.name}</p>
             <p>{user?.email}</p>
@@ -158,11 +159,11 @@ const Profile = ({socket}) => {
 
             <Link to="/update/profile">Update Profile</Link>
           </div>
-          <div>
+          <div className="profile__buttons">
             <button onClick={logoutHandler}>Logout</button>
             <button onClick={deleteHandler}>Delete Account</button>
           </div>
-          <div>
+          <div className="profile__posts">
             {ownPost.map((post) => (
               <div key={post._id}>
                 <PostCard post={post} socket={socket} />

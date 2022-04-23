@@ -15,6 +15,7 @@ import CreatePost from "./components/Posts/CreatePost";
 import UserDetails from "./components/User/UserDetails";
 import ProtectRoute from "./ProtectRoute";
 import { io } from "socket.io-client";
+import {BACKEND_SOCKET_URL} from "./url"
 
 function App() {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
@@ -23,7 +24,7 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    setSocket(io("http://localhost:5000"));
+    setSocket(io(BACKEND_SOCKET_URL));
   }, []);
 
   useEffect(() => {

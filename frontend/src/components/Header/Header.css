@@ -1,0 +1,160 @@
+.header{
+    width: 100%;
+    height: 60px;
+    background-color: rgb(251, 251, 251);
+    border-bottom: 3px solid #0081AF;
+    padding: 1rem 0.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header__logo{
+    font-size: 2rem;
+    color: #0081AF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.header__logo svg{
+    color: #0081AF;
+}
+
+.header__search{
+    flex: 0.7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black; */
+}
+.header__div1{
+    max-width: 500px;
+    width: 100%;
+    border: 2px solid #0081AF;
+    border-radius: 5px;
+}
+
+.header__div1 > form{
+    width: 100%;
+}
+.header__div1 > form > input{
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+}
+
+.header__search svg{
+    color: #0081AF;
+    font-size: 1.7rem;
+    cursor: pointer;
+}
+
+.header__user{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.header__user svg{
+    color: #0081AF;
+    font-size: 1.7rem;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+.header__user img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.header__user a{
+    color: #0081AF;
+}
+
+.header__signin{
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.notification__container{
+    background-color: white;
+    position: fixed;
+    top: 60px;
+    right: 0;
+    z-index: 100;
+    width: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+    box-shadow: -4px 4px 9px 0px rgba(159, 209, 242, 1);
+    padding: 1rem 0.5rem;
+}
+
+.notification__container > p{
+    font-size: 1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.notification__box > p{
+    font-size: 1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.notification__box > p > span > svg{
+    color: black;
+    margin-left: 1rem;
+    font-size: 0.8rem;
+}
+
+.notification__box > button{
+    width: 100%;
+    font-size: 1rem;
+    font-family: monospace;
+    border: none;
+    outline: none;
+    background-color: rgb(255, 61, 61);
+    color: white;
+    padding: 0.3rem 0.5rem;
+    border-radius: 3px;
+}
+
+.search__results{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.loading__msg{
+    font-size: 1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: #0081AF;
+}
+
+.search__results > a{
+    text-decoration: none;
+    color: #0081AF;
+    font-size: 1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.search__results img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+
+@media (max-width: 450px){
+    .header__search{
+        flex: 0.85;
+    }
+}
