@@ -2,5 +2,181 @@
     margin-top: 5rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
+.profile__info{
+    width: 95%;
+    max-width: 700px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.profile__info > img{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+}
+
+.profile__info > div{
+    text-align: center;
+}
+
+.profile__info > div > p{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.1rem;
+    color: #0081AF;
+    margin: 0.3rem 0;
+}
+.profile__info > div > a{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: darkcyan;
+    font-weight: normal;
+    transition: all 0.5s ;
+}
+.profile__info > div > a:hover{
+    text-decoration: underline;
+}
+.email{
+    font-size: 0.8rem;
+    color: #606060 !important;
+}
+.bio{
+    font-size: 0.8rem;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    color: #00ABE7 !important;
+}
+
+.follow__btn{
+    padding: 0.3rem 0.5rem;
+    border: 2px solid #00ABE7;
+    border-radius: 3px;
+    text-align: center;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+.follow__btn:hover{
+    background-color: #0187b8;
+    color: #fff;
+}
+
+@media (max-width: 600px){
+    .profile__info{
+        flex-direction: column;
+        align-items: center;
+    }
+    .profile__info > img{
+        width: 200px;
+        height: 200px;
+    }
+    .profile__info > div > p{
+        font-size: 1rem;
+    }
+    .profile__info > div > a{
+        font-size: 1rem;
+    }
+}
+
+.profile__buttons{
+    margin: 2rem 0;
+    max-width: 300px;
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.profile__buttons > button{
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-size: 1rem;
+}
+
+.logout{
+    background-color: #5ac041;
+}
+.logout:hover{
+    background-color: #69995D;
+}
+.delete{
+    background-color: #d33250;
+}
+.delete:hover{
+    background-color: #a7233b;
+}
+
+.follow__container{
+    background-color: white;
+    position: fixed;
+    top: 25%;
+    left: 25%;
+    width: 95%;
+    max-width: 400px;
+    height: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    border: 2px solid #00ABE7;
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0px 0px 10px rgba(89, 87, 87, 0.5);
+}
+
+.follow__container > svg {
+    color: red;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+.follow__box{
+    padding: 1rem;
+}
+
+.follow__box > a{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.follow__box > a > img{
+    border-radius: 50%;
+    margin-right: 0.75rem;
+}
+
+
+.postdltbtn{
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border: 2px solid red;
+    font-size: 1rem;
+    color: red;
+    padding: 0.3rem 0.5rem;
+    background-color: white;
+    border-radius: 2px;
+    margin-bottom: 0.5rem;
+    transition: all 0.4s;
+}
+.postdltbtn:hover{
+    background-color: red;
+    color: white;
+}
+
+.profile__posts{
+    margin-top: 2rem;
+    border-top: 2px solid #0187b8;
+    padding: 2rem;
+    width: 100%;
+    max-width: 700px;
+}

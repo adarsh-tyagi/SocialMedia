@@ -33,7 +33,7 @@ const Home = ({ socket }) => {
             {homePost.map((post) => (
               <PostCard key={post._id} post={post} socket={socket} />
             ))}
-            <div>
+            <div className="pagination">
               {page > 1 ? (
                 <button onClick={() => setPage((page) => page - 1)}>
                   Previous
@@ -51,7 +51,7 @@ const Home = ({ socket }) => {
             </div>
           </div>
 
-          <div>
+          <div className="usercard__box">
             <UserCard />
           </div>
         </div>

@@ -14,6 +14,7 @@ import { clearUserError } from "../../features/userSlice";
 import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
 // import { createNotification } from "../../features/notificationSlice";
+import "./Profile.css"
 
 const UserDetails = ({ socket }) => {
   const { userID } = useParams();
@@ -94,22 +95,28 @@ const UserDetails = ({ socket }) => {
       {loading || followLoading ? (
         <Loader />
       ) : (
-        <div>
-          <div>
+        <div className="profile__container">
+          <div className="profile__info">
             <img src={userDetail?.avatar.url} alt={userDetail?.name} />
-            <p>{userDetail?.name}</p>
-            <p>{userDetail?.bio}</p>
-            <p>Followers {otherUserFollowers?.length}</p>
-            <p>Following {otherUserFollowings?.length}</p>
-            {followingList?.find(
-              (item) => String(item.following._id) === String(userDetail?._id)
-            ) ? (
-              <button onClick={(e) => unfollowHandler(e)}>Unfollow</button>
-            ) : (
-              <button onClick={(e) => followHandler(e)}>Follow</button>
-            )}
+            <div>
+              <p>{userDetail?.name}</p>
+              <p className="bio">{userDetail?.bio}</p>
+              <p className="follow__btn">
+                Followers {otherUserFollowers?.length}
+              </p>
+              <p className="follow__btn">
+                Following {otherUserFollowings?.length}
+              </p>
+              {followingList?.find(
+                (item) => String(item.following._id) === String(userDetail?._id)
+              ) ? (
+                <button onClick={(e) => unfollowHandler(e)}>Unfollow</button>
+              ) : (
+                <button onClick={(e) => followHandler(e)}>Follow</button>
+              )}
+            </div>
           </div>
-          <div>
+          <div className="profile__posts">
             {othersPosts.length > 0 ? (
               othersPosts?.map((post) => (
                 <PostCard key={post._id} post={post} />

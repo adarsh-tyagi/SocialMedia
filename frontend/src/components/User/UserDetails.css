@@ -1,0 +1,9 @@
+
+
+.profile__posts {
+    margin-top: 2rem;
+    border-top: 2px solid #0187b8;
+    padding: 2rem;
+    width: 100%;
+    max-width: 700px;
+}
