@@ -9,7 +9,7 @@ const ErrorHandler = require("../utils/errorHandler");
 
 // get home feed posts
 exports.getHomePosts = catchAsyncError(async (req, res, next) => {
-  const postPerPage = 2;
+  const postPerPage =5;
   const page = req.query.page;
   const homePosts = await Post.find()
     .sort({ created_at: -1 })

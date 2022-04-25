@@ -103,14 +103,20 @@
 .notification__box > p{
     font-size: 1rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: black;
+    margin-bottom: 0.3rem;
 }
 .notification__box > p > span > svg{
     color: black;
     margin-left: 1rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .notification__box > button{
+    cursor: pointer;
+    margin-top: 1rem;
     width: 100%;
     font-size: 1rem;
     font-family: monospace;

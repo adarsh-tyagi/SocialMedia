@@ -27,7 +27,7 @@ const PORT = process.env.PORT || 5000;
 // });
 
 const io = require("socket.io")(server, {
-  cors: { origin: "http://localhost:3000" },
+  cors: { origin: process.env.FRONTEND_URL },
 });
 
 // socket for notifications and online users

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TiSocialInstagram } from "react-icons/ti";
-import { MdClose, MdNotifications, MdOutlineSearch } from "react-icons/md";
+import { MdClose, MdNotifications} from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUser } from "../../features/userSlice";
 import Backdrop from "@mui/material/Backdrop";
@@ -16,7 +16,7 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [notificationBox, setNotificationBox] = useState(false);
   const [screen, setScreen] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
+  // const [openSearch, setOpenSearch] = useState(false);
 
   // const [notifications, setNotifications] = useState(null)
 
@@ -68,7 +68,7 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
   return (
     <div className="header">
       <Link to="/" className="header__logo">
-        <TiSocialInstagram /> {!screen && 'PhotoGram'}
+        <TiSocialInstagram /> {!screen && "PhotoGram"}
       </Link>
 
       <div className="header__search">
@@ -90,34 +90,40 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
         {screen ? (
           <MdOutlineSearch onClick={() => setOpenSearch(!openSearch)} />
         ) : ( */}
-          <div className="header__div1">
-            <form onSubmit={submitHandler}>
-              <input
-                type="text"
-                placeholder="Search People"
-                onChange={(e) => setSearchTerm(e.target.value)}
-                value={searchTerm}
-              />
-            </form>
-          </div>
+        <div className="header__div1">
+          <form onSubmit={submitHandler}>
+            <input
+              type="text"
+              placeholder="Search People"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              value={searchTerm}
+            />
+          </form>
+        </div>
         {/* )} */}
       </div>
 
       <div className="header__user">
-        <MdNotifications onClick={() => setNotificationBox(!notificationBox)} />
+        {notifications?.length > 0 ? (
+          <MdNotifications
+            onClick={() => setNotificationBox(!notificationBox)}
+            style={{color: "red"}}
+          />
+        ) : (
+          <MdNotifications
+            onClick={() => setNotificationBox(!notificationBox)}
+          />
+        )}
 
-
-          {isAuthenticated ? (
-            <Link to="/profile">
-              <img
-                src={user.avatar.url}
-                alt={user.name}
-              />
-            </Link>
-          ) : (
-            <Link to="/signin" className="header__signin">Sign In</Link>
-          )}
-      
+        {isAuthenticated ? (
+          <Link to="/profile">
+            <img src={user.avatar.url} alt={user.name} />
+          </Link>
+        ) : (
+          <Link to="/signin" className="header__signin">
+            Sign In
+          </Link>
+        )}
       </div>
 
       {notificationBox ? (

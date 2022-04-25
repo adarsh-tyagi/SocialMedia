@@ -14,7 +14,8 @@ import { clearUserError } from "../../features/userSlice";
 import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
 // import { createNotification } from "../../features/notificationSlice";
-import "./Profile.css"
+import "./Profile.css";
+import "./UserDetails.css";
 
 const UserDetails = ({ socket }) => {
   const { userID } = useParams();
@@ -101,28 +102,36 @@ const UserDetails = ({ socket }) => {
             <div>
               <p>{userDetail?.name}</p>
               <p className="bio">{userDetail?.bio}</p>
-              <p className="follow__btn">
-                Followers {otherUserFollowers?.length}
-              </p>
-              <p className="follow__btn">
-                Following {otherUserFollowings?.length}
-              </p>
+              <p>Followers {otherUserFollowers?.length}</p>
+              <p>Following {otherUserFollowings?.length}</p>
               {followingList?.find(
                 (item) => String(item.following._id) === String(userDetail?._id)
               ) ? (
-                <button onClick={(e) => unfollowHandler(e)}>Unfollow</button>
+                <button
+                  onClick={(e) => unfollowHandler(e)}
+                  className="unfollow__button"
+                >
+                  Unfollow
+                </button>
               ) : (
-                <button onClick={(e) => followHandler(e)}>Follow</button>
+                <button
+                  onClick={(e) => followHandler(e)}
+                  className="follow__button"
+                >
+                  Follow
+                </button>
               )}
             </div>
           </div>
           <div className="profile__posts">
             {othersPosts.length > 0 ? (
               othersPosts?.map((post) => (
-                <PostCard key={post._id} post={post} />
+                <div key={post._id}>
+                  <PostCard post={post} socket={socket} />
+                </div>
               ))
             ) : (
-              <h1>No Posts from the user</h1>
+              <h1 className="nopost__msg">No Posts from the user</h1>
             )}
           </div>
         </div>
