@@ -10,6 +10,7 @@ import {
 } from "../../features/userSlice";
 import Loader from "../Loader/Loader";
 import { FaUserAlt, FaPencilAlt } from "react-icons/fa";
+import "./Signin.css";
 
 const UpdateProfile = () => {
   const { loading, user, error, isUpdated, message } = useSelector(
@@ -67,7 +68,8 @@ const UpdateProfile = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div>
+        <div className="login__container">
+          <h1>Update Profile</h1>
           <form encType="multipart/form-data" onSubmit={updateHandler}>
             <div>
               <FaUserAlt />

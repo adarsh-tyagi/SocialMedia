@@ -1,17 +1,32 @@
 /* css variables */
 /* :root {
-  --backgroundColor1: #f5f5f5;
-  --backgroundColor2: #f5f5f5;
-  --textColor1: #000;
-  --textColor2: #fff;
-  --textColor3: #000;
-  --bodyColor1: #000;
-  --bodyColor2: #fff;
-  --deleteBtnColor1: #fff;
-  --deleteBtnColor2: #000;
-  --successBtnColor1: #fff;
-  --successBtnColor2: #000;
+  --backgroundColor1: #0081AF;
+  --backgroundColor2: #00ABE7;
+  --deleteBtnColor1: #C33C54;
+  --successBtnColor1: #69995D;
+  --likeBtn: #D66BA0;
 } */
+
+/* scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: black;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #404040;
+  border-radius: 15px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #808080;
+}
 
 *{
   margin: 0;
@@ -22,4 +37,8 @@
 .App{
   max-width: 100vw;
   min-height: 100vh;
+}
+
+a{
+  text-decoration: none;
 }

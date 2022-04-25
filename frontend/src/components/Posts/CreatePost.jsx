@@ -9,6 +9,7 @@ import {
 } from "../../features/postSlice";
 import Loader from "../Loader/Loader";
 import { MdOutlineAddPhotoAlternate, MdOutlineMessage } from "react-icons/md";
+import "./CreatePost.css"
 
 const CreatePost = () => {
   const { loading, message, error } = useSelector((state) => state.post);
@@ -58,7 +59,7 @@ const CreatePost = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div>
+        <div className="login__container">
           <h1>Create New Post</h1>
 
           <form onSubmit={submitHandler}>

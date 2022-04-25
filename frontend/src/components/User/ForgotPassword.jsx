@@ -8,6 +8,7 @@ import {
 } from "../../features/userSlice";
 import { FaEnvelope } from "react-icons/fa";
 import Loader from "../Loader/Loader";
+import "./Signin.css"
 
 const ForgotPassword = () => {
   const { loading, error, message } = useSelector((state) => state.user);
@@ -37,7 +38,7 @@ const ForgotPassword = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="update__container">
+        <div className="login__container">
           <form encType="multipart/form-data" onSubmit={submitHandler}>
             <div>
               <FaEnvelope />

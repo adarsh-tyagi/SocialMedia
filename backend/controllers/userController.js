@@ -135,8 +135,8 @@ exports.forgotUserPassword = catchAsyncError(async (req, res, next) => {
   const resetToken = await user.getResetPasswordToken();
   await user.save({ validateBeforeSave: false });
 
-  // const resetPasswordUrl = `${req.protocol}://${req.get('host')}/password/reset/${resetToken}`
-  const resetPasswordUrl = `http://localhost:3000/password/reset/${resetToken}`;
+  const resetPasswordUrl = `${req.protocol}://${req.get('host')}/password/reset/${resetToken}`
+  // const resetPasswordUrl = `http://localhost:3000/password/reset/${resetToken}`;
 
   const message = `Hi ${user.name}\nPlease click on the url to change your password\n${resetPasswordUrl}\nIf you did not requested for the same. Kindly ignore the mail\n\nSocialMedia Team`;
   try {

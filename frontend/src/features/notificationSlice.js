@@ -89,6 +89,9 @@ export const notificationSlice = createSlice({
     clearNotificationMessage: (state) => {
       state.message = null;
     },
+    setNotifications: (state, {payload}) => {
+      state.notifications = payload
+    }
   },
   extraReducers: {
     [createNotification.pending]: (state, action) => {
@@ -142,5 +145,5 @@ export const notificationSlice = createSlice({
   },
 });
 
-export const { clearNotificationError, clearNotificationMessage } = notificationSlice.actions;
+export const { clearNotificationError, clearNotificationMessage, setNotifications } = notificationSlice.actions;
 export default notificationSlice.reducer;

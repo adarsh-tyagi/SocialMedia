@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TiSocialInstagram } from "react-icons/ti";
-import { MdClose, MdNotifications, MdOutlineSearch } from "react-icons/md";
+import { MdClose, MdNotifications} from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUser } from "../../features/userSlice";
 import Backdrop from "@mui/material/Backdrop";
 import {
   deleteAllNotifications,
   deleteNotification,
-  getNotifications,
+  setNotifications,
 } from "../../features/notificationSlice";
+import "./Header.css"
 
-const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
+const Header = ({ isAuthenticated, user, backdrop, setBackdrop, socket }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [notificationBox, setNotificationBox] = useState(false);
   const [screen, setScreen] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
+  // const [openSearch, setOpenSearch] = useState(false);
+
+  // const [notifications, setNotifications] = useState(null)
 
   const { loading, searchResult } = useSelector((state) => state.user);
   const { notifications } = useSelector((state) => state.notification);
@@ -45,9 +48,16 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
     window.innerWidth <= 600 ? setScreen(true) : setScreen(false);
   };
 
+  // useEffect(() => {
+  //   dispatch(getNotifications());
+  // }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getNotifications());
-  }, [dispatch]);
+    socket.on("getNotification", (data) => {
+      // setNotifications(data)
+      dispatch(setNotifications(data));
+    });
+  }, [socket, dispatch]);
 
   useEffect(() => {
     toggleScreen();
@@ -57,26 +67,29 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
 
   return (
     <div className="header">
-      <Link to="/">
-        <TiSocialInstagram /> PhotoGram
+      <Link to="/" className="header__logo">
+        <TiSocialInstagram /> {!screen && "PhotoGram"}
       </Link>
-      {openSearch && screen ? (
-        <div className="header__div1">
-          <form onSubmit={submitHandler}>
-            <input
-              type="text"
-              placeholder="Search people"
-              onChange={(e) => setSearchTerm(e.target.value)}
-              value={searchTerm}
-            />
-          </form>
-        </div>
-      ) : (
-        ""
-      )}
-      {screen ? (
-        <MdOutlineSearch onClick={() => setOpenSearch(!openSearch)} />
-      ) : (
+
+      <div className="header__search">
+        {/* {openSearch && screen ? (
+          <div className="header__div1">
+            <form onSubmit={submitHandler}>
+              <input
+                type="text"
+                placeholder="Search people"
+                onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm}
+              />
+            </form>
+          </div>
+        ) : (
+          ""
+        )}
+
+        {screen ? (
+          <MdOutlineSearch onClick={() => setOpenSearch(!openSearch)} />
+        ) : ( */}
         <div className="header__div1">
           <form onSubmit={submitHandler}>
             <input
@@ -87,14 +100,37 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
             />
           </form>
         </div>
-      )}
+        {/* )} */}
+      </div>
 
-      <MdNotifications onClick={() => setNotificationBox(!notificationBox)} />
+      <div className="header__user">
+        {notifications?.length > 0 ? (
+          <MdNotifications
+            onClick={() => setNotificationBox(!notificationBox)}
+            style={{color: "red"}}
+          />
+        ) : (
+          <MdNotifications
+            onClick={() => setNotificationBox(!notificationBox)}
+          />
+        )}
+
+        {isAuthenticated ? (
+          <Link to="/profile">
+            <img src={user.avatar.url} alt={user.name} />
+          </Link>
+        ) : (
+          <Link to="/signin" className="header__signin">
+            Sign In
+          </Link>
+        )}
+      </div>
+
       {notificationBox ? (
-        <div>
-          {notifications.length > 0 ? (
-            <div>
-              {notifications.map((item) => (
+        <div className="notification__container">
+          {notifications?.length > 0 ? (
+            <div className="notification__box">
+              {notifications?.map((item) => (
                 <p key={item._id}>
                   {item.content}
                   <span>
@@ -117,20 +153,6 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
       ) : (
         ""
       )}
-      <div className="header__div2">
-        {isAuthenticated ? (
-          <Link to="/profile">
-            <img
-              src={user.avatar.url}
-              alt={user.name}
-              height="50px"
-              width="50px"
-            />
-          </Link>
-        ) : (
-          <Link to="/signin">Sign In</Link>
-        )}
-      </div>
       <Backdrop
         sx={{
           color: "#fff",
@@ -148,7 +170,8 @@ const Header = ({ isAuthenticated, user, backdrop, setBackdrop }) => {
               ?.filter((item) => String(item._id) !== String(user._id))
               .map((item) => (
                 <Link to={`/user/detail/${String(item._id)}`} key={item._id}>
-                  {item.name}
+                  <img src={item?.avatar.url} alt={item.name} />
+                  <p>{item.name}</p>
                 </Link>
               ))
           )}

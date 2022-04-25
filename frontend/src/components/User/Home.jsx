@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
 import UserCard from "./UserCard";
+import "./Home.css";
 
-const Home = () => {
+const Home = ({ socket }) => {
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const { loading, isAuthenticated } = useSelector((state) => state.user);
@@ -30,9 +31,9 @@ const Home = () => {
         <div className="home">
           <div className="home__posts">
             {homePost.map((post) => (
-              <PostCard key={post._id} post={post} />
+              <PostCard key={post._id} post={post} socket={socket} />
             ))}
-            <div>
+            <div className="pagination">
               {page > 1 ? (
                 <button onClick={() => setPage((page) => page - 1)}>
                   Previous
@@ -48,22 +49,20 @@ const Home = () => {
                 </button>
               )}
             </div>
-            </div>
-            
-            <div>
-              <UserCard />
-            </div>
+          </div>
+
+          <div className="usercard__box">
+            <UserCard />
+          </div>
         </div>
       ) : (
         <div className="home__msg">
-          <div>
-            <p>Share your emotions in picture with the world</p>
+            <p>Share your emotions with the world through pictures</p>
             <div>
               <TiSocialInstagram />
               <p>Photogram</p>
             </div>
             <Link to="/signin">Sign In</Link>
-          </div>
         </div>
       )}
     </Fragment>

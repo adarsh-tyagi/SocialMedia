@@ -2,8 +2,17 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMyFollowers, getMyFollowing, clearFollowError } from "../../features/followSlice";
-import { deletePost, ownPosts, clearPostError, clearPostMessage } from "../../features/postSlice";
+import {
+  getMyFollowers,
+  getMyFollowing,
+  clearFollowError,
+} from "../../features/followSlice";
+import {
+  deletePost,
+  ownPosts,
+  clearPostError,
+  clearPostMessage,
+} from "../../features/postSlice";
 import {
   clearUserError,
   clearUserMessage,
@@ -15,8 +24,9 @@ import Loader from "../Loader/Loader";
 import PostCard from "../Posts/PostCard";
 import { Link } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
+import "./Profile.css";
 
-const Profile = () => {
+const Profile = ({ socket }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
@@ -92,7 +102,7 @@ const Profile = () => {
     followError,
     message,
     isDeleted,
-    postMessage
+    postMessage,
   ]);
 
   return (
@@ -100,75 +110,96 @@ const Profile = () => {
       {loading || postLoading || followLoading ? (
         <Loader />
       ) : (
-        <div>
-          <div>
+        <div className="profile__container">
+          <div className="profile__info">
             <img src={user?.avatar?.url} alt={user?.name} />
-            <p>{user?.name}</p>
-            <p>{user?.email}</p>
-            <p>{user?.bio}</p>
-            <p>Joined on {user?.created_at.slice(0, 10)}</p>
+            <div>
+              <p>{user?.name}</p>
+              <p className="email">{user?.email}</p>
+              <p className="bio">{user?.bio}</p>
+              <p className="email">Joined on {user?.created_at.slice(0, 10)}</p>
 
-            <p onClick={() => setOpenFollowerBox(true)}>
-              {followersList?.length} Followers
-            </p>
-            {openFollowerBox ? (
-              <div>
-                <AiOutlineClose onClick={() => setOpenFollowerBox(false)} />
-                <div>
-                  {followersList.map((item) => (
-                    <Link to={`/user/detail/${item.follower._id}`} key={item._id}>
-                      <img
-                        src={item.follower.avatar.url}
-                        alt={item.follower.name}
-                        height="30px"
-                        width="30px"
-                      />
-                      <p>{item.follower.name}</p>
-                    </Link>
-                  ))}
+              <p
+                onClick={() => setOpenFollowerBox(true)}
+                className="follow__btn"
+              >
+                {followersList?.length} Followers
+              </p>
+              {openFollowerBox ? (
+                <div className="follow__container">
+                  <AiOutlineClose onClick={() => setOpenFollowerBox(false)} />
+                  <div className="follow__box">
+                    {followersList.map((item) => (
+                      <Link
+                        to={`/user/detail/${item.follower._id}`}
+                        key={item._id}
+                      >
+                        <img
+                          src={item.follower.avatar.url}
+                          alt={item.follower.name}
+                          height="30px"
+                          width="30px"
+                        />
+                        <p>{item.follower.name}</p>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              ""
-            )}
+              ) : (
+                ""
+              )}
 
-            <p onClick={() => setOpenFollowingBox(true)}>
-              {followingList?.length} Following
-            </p>
-            {openFollowingBox ? (
-              <div>
-                <AiOutlineClose onClick={() => setOpenFollowingBox(false)} />
-                <div>
-                  {followingList.map((item) => (
-                    <Link to={`/user/detail/${item.following._id}`} key={item._id}>
-                      <img
-                        src={item.following.avatar.url}
-                        alt={item.follower.name}
-                        height="30px"
-                        width="30px"
-                      />
-                      <p>{item.following.name}</p>
-                    </Link>
-                  ))}
+              <p
+                onClick={() => setOpenFollowingBox(true)}
+                className="follow__btn"
+              >
+                {followingList?.length} Following
+              </p>
+              {openFollowingBox ? (
+                <div className="follow__container">
+                  <AiOutlineClose onClick={() => setOpenFollowingBox(false)} />
+                  <div className="follow__box">
+                    {followingList.map((item) => (
+                      <Link
+                        to={`/user/detail/${item.following._id}`}
+                        key={item._id}
+                      >
+                        <img
+                          src={item.following.avatar.url}
+                          alt={item.follower.name}
+                          height="30px"
+                          width="30px"
+                        />
+                        <p>{item.following.name}</p>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              ""
-            )}
+              ) : (
+                ""
+              )}
 
-            <Link to="/update/profile">Update Profile</Link>
+              <Link to="/update/profile">Update Profile</Link>
+            </div>
           </div>
-          <div>
-            <button onClick={logoutHandler}>Logout</button>
-            <button onClick={deleteHandler}>Delete Account</button>
+          <div className="profile__buttons">
+            <button onClick={logoutHandler} className="logout">
+              Logout
+            </button>
+            <button onClick={deleteHandler} className="delete">
+              Delete Account
+            </button>
           </div>
-          <div>
+          <div className="profile__posts">
             {ownPost.map((post) => (
               <div key={post._id}>
-                <PostCard post={post} />
-                <button onClick={(e) => postDeleteHandler(post._id)}>
+                <button
+                  onClick={(e) => postDeleteHandler(post._id)}
+                  className="postdltbtn"
+                >
                   Delete
                 </button>
+                <PostCard post={post} socket={socket} />
               </div>
             ))}
           </div>

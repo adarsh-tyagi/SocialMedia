@@ -1,0 +1,49 @@
+.usercard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #00ABE7;
+    border-radius: 5px;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.usercard > img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.usercard > p{
+    color: #000;
+    font-size: 1rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.usercard > a{
+    text-decoration: none;
+    color: #0684b1;
+    font-family: monospace;
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.newpost{
+    padding: 0.3rem 0.5rem;
+    border: 2px solid #067aa4;
+    border-radius: 2px;
+    font-size: 1.2rem;
+    transition: all 0.4s;
+}
+.newpost > svg{
+    margin-right: 0.3rem;
+}
+.newpost:hover{
+    background-color: #067aa4;
+    color: whitesmoke;
+}

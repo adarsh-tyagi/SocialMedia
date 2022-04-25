@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "react-alert";
-import { clearLikeError, postLikes, toggleLike } from "../../features/likeSlice";
+import {
+  clearLikeError,
+  postLikes,
+  toggleLike,
+} from "../../features/likeSlice";
 import {
   createComment,
   deleteComment,
   postComments,
   clearCommentError,
-  clearCommentMessage
+  // clearCommentMessage
 } from "../../features/commentSlice";
 import {
   AiOutlineLike,
@@ -17,9 +21,10 @@ import {
   AiFillDelete,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { createNotification } from "../../features/notificationSlice";
+// import { createNotification } from "../../features/notificationSlice";
+import "./PostCard.css";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, socket }) => {
   const [openBox, setOpenBox] = useState(false);
   const [comment, setComment] = useState("");
 
@@ -56,12 +61,17 @@ const PostCard = ({ post }) => {
     e.preventDefault();
     dispatch(toggleLike(String(post._id)));
     if (String(post.owner._id) !== String(user._id)) {
-      dispatch(
-        createNotification({
-          receiverId: post.owner._id,
-          content: `${user.name} liked your post.`,
-        })
-      );
+      // dispatch(
+      //   createNotification({
+      //     receiverId: post.owner._id,
+      //     content: `${user.name} liked your post.`,
+      //   })
+      // );
+      socket.emit("sendNotification", {
+        sender: user._id,
+        receiver: post.owner._id,
+        content: `${user.name} liked your post`,
+      });
     }
   };
 
@@ -69,12 +79,17 @@ const PostCard = ({ post }) => {
     e.preventDefault();
     dispatch(createComment({ content: comment, postId: String(post._id) }));
     if (String(post.owner._id) !== String(user._id)) {
-      dispatch(
-        createNotification({
-          receiverId: post.owner._id,
-          content: `${user.name} commented on your post.`,
-        })
-      );
+      // dispatch(
+      //   createNotification({
+      //     receiverId: post.owner._id,
+      //     content: `${user.name} commented on your post.`,
+      //   })
+      // );
+      socket.emit("sendNotification", {
+        sender: user._id,
+        receiver: post.owner._id,
+        content: `${user.name} commented on your post`,
+      });
     }
   };
 
@@ -104,13 +119,13 @@ const PostCard = ({ post }) => {
   }, [alert, error, message, commentError, commentMessage, dispatch]);
 
   return (
-    <div>
-      <div>
+    <div className="post__container">
+      <div className="post__owner__info">
         <img
           src={post?.owner?.avatar?.url}
           alt={post?.owner?.name}
-          height="30px"
-          width="30px"
+          height="40px"
+          width="40px"
         />
         {post?.owner?._id === user?._id ? (
           <p>{post?.owner?.name}</p>
@@ -120,43 +135,58 @@ const PostCard = ({ post }) => {
           </Link>
         )}
       </div>
-      <img src={post?.image.url} alt="post" />
+      <img src={post?.image.url} alt="post" height="50%" width="100%" />
       <p>
-        <span>{String(post?.created_at).slice(0, 10)} </span>
+        <span>{String(post?.created_at).slice(0, 10)}: </span>
         {post?.caption}
       </p>
-      <button onClick={(e) => boxOpenHandler(e)}>View Information</button>
+      <div>
+        <button onClick={(e) => boxOpenHandler(e)}>View Information</button>
+      </div>
 
       {openBox ? (
-        <div>
+        <div className="postinfo__box">
           <AiOutlineClose onClick={() => setOpenBox(false)} />
           <div>
-            <p onClick={(e) => likeHandler(e)}>
-              {likes.find(
-                (item) => String(item.owner._id) === String(user._id)
-              ) ? (
-                <AiFillLike />
-              ) : (
-                <AiOutlineLike />
-              )}{" "}
-              <span>{likeCount}</span>
-            </p>
-            <p>
-              <AiOutlineComment /> {commentCount}
-            </p>
-            <div>
+            <div className="postinfo__btn">
+              <p onClick={(e) => likeHandler(e)}>
+                {likes.find(
+                  (item) => String(item.owner._id) === String(user._id)
+                ) ? (
+                  <AiFillLike style={{ color: "#D66BA0" }} />
+                ) : (
+                  <AiOutlineLike style={{ color: "#D66BA0" }} />
+                )}{" "}
+                <span>{likeCount}</span>
+              </p>
+              <p>
+                <AiOutlineComment /> {commentCount}
+              </p>
+            </div>
+            <div className="postinfo__cmnt">
               {comments.find(
                 (item) => String(item.owner._id) === String(user._id)
               ) ? (
                 <div>
-                  <p>Your comment</p>
-                  <p>
+                  <p
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "black",
+                      marginBottom: "0.25rem",
+                    }}
+                  >
+                    Your comment
+                  </p>
+                  <p style={{ fontSize: "1rem" }}>
                     {
                       comments.find(
                         (item) => String(item.owner._id) === String(user._id)
                       ).content
                     }{" "}
-                    <AiFillDelete onClick={(e) => commentDeleteHandler(e)} />
+                    <AiFillDelete
+                      onClick={(e) => commentDeleteHandler(e)}
+                      style={{ cursor: "pointer", fontSize: "1.3rem" }}
+                    />
                   </p>
                 </div>
               ) : (
@@ -167,11 +197,11 @@ const PostCard = ({ post }) => {
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                   />
-                  <input type="submit" value="Submit" />
+                  <input type="submit" value="Submit" className="cmntbtn" />
                 </form>
               )}
             </div>
-            <div>
+            <div className="all__comments">
               {comments
                 .filter((item) => String(item.owner._id) !== String(user._id))
                 .map((item) => (
