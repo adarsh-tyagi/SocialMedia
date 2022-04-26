@@ -3,6 +3,7 @@ const fileupload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const errorMiddleware = require("./middlewares/error");
+const path = require("path")
 
 // import routers
 const userRouter = require("./routes/userRoute");
